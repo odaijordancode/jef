@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Album;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
 class AdminGalleryController extends Controller
@@ -15,6 +15,7 @@ class AdminGalleryController extends Controller
     public function index()
     {
         $albums = Album::latest()->paginate(10);
+
         return view('admin.gallery.index', compact('albums'));
     }
 
@@ -59,7 +60,9 @@ class AdminGalleryController extends Controller
      */
     public function edit(Album $gallery)  // ← Changed: $album → $gallery
     {
-        return view('admin.gallery.edit', compact('gallery'));
+        $album = $gallery;
+
+        return view('admin.gallery.edit', compact('album'));
     }
 
     /**
@@ -67,6 +70,7 @@ class AdminGalleryController extends Controller
      */
     public function update(Request $request, Album $gallery)  // ← Changed: $album → $gallery
     {
+
         $request->validate([
             'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'album_name_en' => 'required|string|max:255',
@@ -81,7 +85,6 @@ class AdminGalleryController extends Controller
             $this->deleteImage($gallery->cover_image);
             $coverImagePath = $this->uploadCoverImage($request);
         }
-
         $gallery->update([
             'cover_image' => $coverImagePath,
             'album_name_en' => $request->album_name_en,
@@ -114,26 +117,28 @@ class AdminGalleryController extends Controller
 
     private function uploadCoverImage(Request $request): ?string
     {
-        if (!$request->hasFile('cover_image')) {
+        if (! $request->hasFile('cover_image')) {
             return null;
         }
 
         $file = $request->file('cover_image');
         $directory = public_path('uploads/albums');
 
-        if (!File::exists($directory)) {
+        if (! File::exists($directory)) {
             File::makeDirectory($directory, 0755, true);
         }
 
-        $filename = time() . '_' . uniqid() . '_' . $file->getClientOriginalName();
+        $filename = time().'_'.uniqid().'_'.$file->getClientOriginalName();
         $file->move($directory, $filename);
 
-        return 'uploads/albums/' . $filename;
+        return 'uploads/albums/'.$filename;
     }
 
     private function deleteImage(?string $path): void
     {
-        if (!$path) return;
+        if (! $path) {
+            return;
+        }
 
         $fullPath = public_path($path);
         if (File::exists($fullPath)) {

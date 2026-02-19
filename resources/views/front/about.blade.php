@@ -372,11 +372,12 @@
         <!-- Right: Image & Slider -->
         <div class="col-lg-6 col-md-12 text-center">
             <div class="ABOUT-image-container position-relative d-inline-block">
-                <img
-                    src="{{ $aboutUs->about_main_image ? asset('' . $aboutUs->about_main_image) : asset('images/placeholder.png') }}"
-                    alt="{{ __('about.main_image_alt') }}"
-                    class="ABOUT-image img-fluid rounded shadow-sm"
-                >
+                @if($aboutUs && $aboutUs->about_main_image)
+    <img src="{{ asset($aboutUs->about_main_image) }}" alt="{{ __('about.main_image_alt') }}">
+@else
+    <img src="{{ asset('images/placeholder.png') }}" alt="{{ __('about.main_image_alt') }}">
+@endif
+
                 <!-- Overlay Slider Card -->
                 <div class="ABOUT-slider position-absolute shadow-sm rounded">
                     <div class="d-flex align-items-center mb-2">

@@ -366,7 +366,7 @@
                                             <label for="main_image" data-bs-toggle="tooltip" title="Upload main image (max 2MB, PNG/JPG)">Main Image</label>
                                             <div class="image-dropzone" id="main-image-dropzone">
                                                 <p class="mb-0">Drag & Drop your main image here or click to upload</p>
-                                                <input type="file" class="form-control-file @error('main_image') is-invalid @enderror" name="main_image" id="main_image" accept="image/png,image/jpeg" aria-describedby="main_image-error" hidden>
+                                                <input type="file" class="form-control-file @error('main_image') is-invalid @enderror" name="main_image" id="main_image"  aria-describedby="main_image-error" hidden>
                                             </div>
                                             @error('main_image')
                                                 <div class="invalid-feedback d-block" id="main_image-error">{{ $message }}</div>

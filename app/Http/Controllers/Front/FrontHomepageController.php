@@ -8,9 +8,17 @@ use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductSubcategory;
 use App\Models\WebsiteSetting;
+use App\Services\CurrencyService;
 
 class FrontHomepageController extends Controller
 {
+        protected $currencyService;
+
+    public function __construct(CurrencyService $currencyService)
+    {
+        $this->currencyService = $currencyService;
+    }
+    
     public function index()
     {
         // About Us section
@@ -37,13 +45,24 @@ class FrontHomepageController extends Controller
                             ->take(6)
                             ->get();
 
+        $currency = session('currency', 'NIS');
+
+        // Convert product prices
+        $products = $products->map(function ($product) use ($currency) {
+            $product->display_price = $this->currencyService->convert($product->price, 'NIS', $currency);
+            $product->display_price_formatted = $this->currencyService->format($product->display_price, $currency);
+
+            return $product;
+        });
+
         // Send all data to the homepage view
         return view('front.homepage', compact(
             'about',
             'products',
             'categories',
             'subcategories',
-            'settings'
+            'settings',
+            'currency'
         ));
     }
 }

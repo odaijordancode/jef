@@ -13,6 +13,7 @@ class AdminAboutController extends Controller
     public function index()
     {
         $aboutUs = AboutUs::first();
+
         return view('admin.about.index', compact('aboutUs'));
     }
 
@@ -29,18 +30,18 @@ class AdminAboutController extends Controller
     {
         $validated = $this->validateRequest($request);
 
-        $about = new AboutUs();
+        $about = new AboutUs;
         $about->about_us_title_en = $validated['about_us_title_en'];
         $about->about_us_title_ar = $validated['about_us_title_ar'];
         $about->about_us_description_en = $validated['about_us_description_en'];
         $about->about_us_description_ar = $validated['about_us_description_ar'];
 
         // Handle features as JSON
-        $about->features_en = !empty($validated['features_en']) ? json_encode(array_filter($validated['features_en'], function ($feature) {
-            return !empty($feature['text']);
+        $about->features_en = ! empty($validated['features_en']) ? json_encode(array_filter($validated['features_en'], function ($feature) {
+            return ! empty($feature['text']);
         })) : null;
-        $about->features_ar = !empty($validated['features_ar']) ? json_encode(array_filter($validated['features_ar'], function ($feature) {
-            return !empty($feature['text']);
+        $about->features_ar = ! empty($validated['features_ar']) ? json_encode(array_filter($validated['features_ar'], function ($feature) {
+            return ! empty($feature['text']);
         })) : null;
 
         // Handle main image
@@ -55,12 +56,12 @@ class AdminAboutController extends Controller
             $sliderIcon = null;
 
             foreach ($validated['sliders'] as $index => $sliderData) {
-                if (!empty(array_filter($sliderData))) {
+                if (! empty(array_filter($sliderData))) {
                     $sliderDescriptionsEn[] = $sliderData['slider_description_en'] ?? null;
                     $sliderDescriptionsAr[] = $sliderData['slider_description_ar'] ?? null;
 
                     // Use the first valid slider icon
-                    if (!$sliderIcon && $request->hasFile("sliders.$index.slider_icon")) {
+                    if (! $sliderIcon && $request->hasFile("sliders.$index.slider_icon")) {
                         $sliderIcon = $this->uploadImage($request->file("sliders.$index.slider_icon"), 'slider');
                     }
                 }
@@ -68,8 +69,8 @@ class AdminAboutController extends Controller
 
             $about->slider_title_en = $validated['sliders'][0]['slider_title_en'] ?? null;
             $about->slider_title_ar = $validated['sliders'][0]['slider_title_ar'] ?? null;
-            $about->slider_description_en = !empty($sliderDescriptionsEn) ? json_encode(array_filter($sliderDescriptionsEn, 'trim')) : null;
-            $about->slider_description_ar = !empty($sliderDescriptionsAr) ? json_encode(array_filter($sliderDescriptionsAr, 'trim')) : null;
+            $about->slider_description_en = ! empty($sliderDescriptionsEn) ? json_encode(array_filter($sliderDescriptionsEn, 'trim')) : null;
+            $about->slider_description_ar = ! empty($sliderDescriptionsAr) ? json_encode(array_filter($sliderDescriptionsAr, 'trim')) : null;
             $about->slider_icon = $sliderIcon;
         }
 
@@ -81,6 +82,7 @@ class AdminAboutController extends Controller
     public function edit($id)
     {
         $aboutUs = AboutUs::findOrFail($id);
+
         return view('admin.about.edit', compact('aboutUs'));
     }
 
@@ -96,11 +98,11 @@ class AdminAboutController extends Controller
         $about->about_us_description_ar = $validated['about_us_description_ar'];
 
         // Handle features as JSON
-        $about->features_en = !empty($validated['features_en']) ? json_encode(array_filter($validated['features_en'], function ($feature) {
-            return !empty($feature['text']);
+        $about->features_en = ! empty($validated['features_en']) ? json_encode(array_filter($validated['features_en'], function ($feature) {
+            return ! empty($feature['text']);
         })) : null;
-        $about->features_ar = !empty($validated['features_ar']) ? json_encode(array_filter($validated['features_ar'], function ($feature) {
-            return !empty($feature['text']);
+        $about->features_ar = ! empty($validated['features_ar']) ? json_encode(array_filter($validated['features_ar'], function ($feature) {
+            return ! empty($feature['text']);
         })) : null;
 
         // Handle main image
@@ -122,7 +124,7 @@ class AdminAboutController extends Controller
             }
 
             foreach ($validated['sliders'] as $index => $sliderData) {
-                if (!empty(array_filter($sliderData))) {
+                if (! empty(array_filter($sliderData))) {
                     $sliderDescriptionsEn[] = $sliderData['slider_description_en'] ?? null;
                     $sliderDescriptionsAr[] = $sliderData['slider_description_ar'] ?? null;
                 }
@@ -130,8 +132,8 @@ class AdminAboutController extends Controller
 
             $about->slider_title_en = $validated['sliders'][0]['slider_title_en'] ?? null;
             $about->slider_title_ar = $validated['sliders'][0]['slider_title_ar'] ?? null;
-            $about->slider_description_en = !empty($sliderDescriptionsEn) ? json_encode(array_filter($sliderDescriptionsEn, 'trim')) : null;
-            $about->slider_description_ar = !empty($sliderDescriptionsAr) ? json_encode(array_filter($sliderDescriptionsAr, 'trim')) : null;
+            $about->slider_description_en = ! empty($sliderDescriptionsEn) ? json_encode(array_filter($sliderDescriptionsEn, 'trim')) : null;
+            $about->slider_description_ar = ! empty($sliderDescriptionsAr) ? json_encode(array_filter($sliderDescriptionsAr, 'trim')) : null;
             $about->slider_icon = $sliderIcon;
         } else {
             // Clear sliders if none provided
@@ -186,10 +188,10 @@ class AdminAboutController extends Controller
     private function uploadImage($file, $folder)
     {
         $baseName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-        $filename = time() . '_' . Str::slug($baseName) . '.' . $file->getClientOriginalExtension();
+        $filename = time().'_'.Str::slug($baseName).'.'.$file->getClientOriginalExtension();
         $path = "Uploads/about_us/$folder";
 
-        if (!File::exists($path)) {
+        if (! File::exists($path)) {
             File::makeDirectory($path, 0755, true);
         }
 

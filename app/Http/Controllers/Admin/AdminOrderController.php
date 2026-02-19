@@ -8,7 +8,6 @@ use App\Models\ShippingArea;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Validation\Rule;
 
 class AdminOrderController extends Controller
 {
@@ -28,6 +27,7 @@ class AdminOrderController extends Controller
     public function show(Order $order)
     {
         $order->load(['items.product', 'client', 'shippingArea']);
+
         return view('admin.orders.show', compact('order'));
     }
 
@@ -35,28 +35,29 @@ class AdminOrderController extends Controller
     {
         $order->load(['items.product', 'client', 'shippingArea']);
         $shippingAreas = ShippingArea::where('is_active', true)->get();
+
         return view('admin.orders.edit', compact('order', 'shippingAreas'));
     }
 
     public function update(Request $request, Order $order)
-{
-    $field = $request->input('field');
-    $value = $request->input('value');
+    {
+        $field = $request->input('field');
+        $value = $request->input('value');
 
-    $allowed = [
-        'status' => ['pending','confirmed','shipped','delivered','cancelled'],
-        'payment_status' => ['unpaid','paid','failed','refunded'],
-        'delivery_status' => ['not_started','in_progress','delivered','cancelled','failed'],
-    ];
+        $allowed = [
+            'status' => ['pending', 'confirmed', 'shipped', 'delivered', 'cancelled'],
+            'payment_status' => ['unpaid', 'paid', 'failed', 'refunded'],
+            'delivery_status' => ['not_started', 'in_progress', 'delivered', 'cancelled', 'failed'],
+        ];
 
-    if (!isset($allowed[$field]) || !in_array($value, $allowed[$field])) {
-        return response()->json(['success' => false, 'message' => 'Invalid value'], 422);
+        if (! isset($allowed[$field]) || ! in_array($value, $allowed[$field])) {
+            return response()->json(['success' => false, 'message' => 'Invalid value'], 422);
+        }
+
+        $order->update([$field => $value]);
+
+        return response()->json(['success' => true]);
     }
-
-    $order->update([$field => $value]);
-
-    return response()->json(['success' => true]);
-}
 
     public function destroy(Order $order)
     {
@@ -81,7 +82,7 @@ class AdminOrderController extends Controller
                     ->select('id', 'full_name', 'total', 'created_at')
                     ->with(['items' => function ($query) {
                         $query->select('order_id', app()->getLocale() === 'ar' ? 'product_name_ar as name' : 'product_name_en as name', 'quantity')
-                              ->take(2);
+                            ->take(2);
                     }])
                     ->latest()
                     ->take(5)
@@ -103,13 +104,15 @@ class AdminOrderController extends Controller
                     });
             });
 
-            Log::info('Pending orders retrieved: ' . $pendingOrders->count());
+            Log::info('Pending orders retrieved: '.$pendingOrders->count());
+
             return response()->json([
                 'pending_orders' => $pendingOrders,
                 'pending_count' => $pendingOrders->count(),
             ], 200);
         } catch (\Exception $e) {
-            Log::error('Failed to fetch pending orders: ' . $e->getMessage());
+            Log::error('Failed to fetch pending orders: '.$e->getMessage());
+
             return response()->json([
                 'pending_orders' => [],
                 'pending_count' => 0,

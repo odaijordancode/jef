@@ -42,7 +42,7 @@
                                 <label class="form-label fw-bold">Current Image</label>
                                 @if ($image->image)
                                     <div class="card p-2" style="width: 150px;">
-                                        <img src="{{ asset('storage/uploads/' . $image->image) }}" class="card-img-top" style="max-height: 100px; object-fit: cover;" alt="{{ $image->alt ?? 'Gallery Image' }}">
+                                        <img src="{{ asset( $image->image) }}" class="card-img-top" style="max-height: 100px; object-fit: cover;" alt="{{ $image->alt ?? 'Gallery Image' }}">
                                         <div class="card-body p-2">
                                             <small class="text-muted">{{ $image->image }}</small>
                                         </div>

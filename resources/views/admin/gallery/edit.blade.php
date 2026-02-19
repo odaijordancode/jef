@@ -18,7 +18,7 @@
             <h6 class="m-0 font-weight-bold text-primary">Edit Album Information</h6>
         </div>
         <div class="card-body">
-       <form action="{{ route('admin.gallery.update', $album->id) }}" method="POST">
+       <form action="{{ route('admin.gallery.update', $album->id) }}" method="POST" enctype="multipart/form-data">
     @csrf
     @method('PUT')
 

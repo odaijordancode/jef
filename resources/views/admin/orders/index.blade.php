@@ -136,9 +136,9 @@
                                             <a href="{{ route('admin.orders.show', $order) }}" class="btn btn-sm btn-info">
                                                 View
                                             </a>
-                                            <a href="{{ route('admin.orders.edit', $order) }}" class="btn btn-sm btn-warning">
-                                                Edit
-                                            </a>
+                                            <!--<a href="{{ route('admin.orders.edit', $order) }}" class="btn btn-sm btn-warning">-->
+                                            <!--    Edit-->
+                                            <!--</a>-->
                                         </td>
                                     </tr>
                                 @empty

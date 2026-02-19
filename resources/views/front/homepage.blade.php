@@ -362,7 +362,7 @@
             <div class="mt-3 text-center HOME-product-details">
               <h6 class="HOME-product-name mb-1">{{ $productName }}</h6>
               <div class="d-flex justify-content-center">
-                <span class="fw-bold">{{ number_format($product->price, 3) }} {{ __('home.currency') }}</span>
+                <span class="fw-bold">{{ $product->display_price_formatted }} {{ $currency }}</span>
               </div>
             </div>
 

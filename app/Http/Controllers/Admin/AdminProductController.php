@@ -7,9 +7,9 @@ use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductSubcategory;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class AdminProductController extends Controller
 {
@@ -19,8 +19,8 @@ class AdminProductController extends Controller
 
         if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
-                $q->where('product_name_en', 'like', '%' . $request->search . '%')
-                  ->orWhere('product_name_ar', 'like', '%' . $request->search . '%');
+                $q->where('product_name_en', 'like', '%'.$request->search.'%')
+                    ->orWhere('product_name_ar', 'like', '%'.$request->search.'%');
             });
         }
 
@@ -38,6 +38,7 @@ class AdminProductController extends Controller
     {
         $categories = ProductCategory::all();
         $subcategories = ProductSubcategory::all();
+
         return view('admin.products.create', compact('categories', 'subcategories'));
     }
 
@@ -53,7 +54,7 @@ class AdminProductController extends Controller
             'status' => 'required|in:active,inactive,pending',
             'category_id' => 'nullable|exists:products_categories,id',
             'subcategory_id' => 'nullable|exists:products_subcategories,id',
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:51200',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'slug' => 'nullable|string|unique:products,slug',
         ]);
 
@@ -64,8 +65,9 @@ class AdminProductController extends Controller
                 try {
                     $imagePaths[] = $this->uploadImage($image, 'products');
                 } catch (\Exception $e) {
-                    Log::error('Image upload failed: ' . $e->getMessage());
-                    return redirect()->back()->withInput()->with('error', 'Failed to upload image: ' . $e->getMessage());
+                    Log::error('Image upload failed: '.$e->getMessage());
+
+                    return redirect()->back()->withInput()->with('error', 'Failed to upload image: '.$e->getMessage());
                 }
             }
         }
@@ -82,22 +84,24 @@ class AdminProductController extends Controller
         try {
             Product::create($data);
         } catch (\Exception $e) {
-            Log::error('Product creation failed: ' . $e->getMessage());
-            return redirect()->back()->withInput()->with('error', 'Failed to create product: ' . $e->getMessage());
+            Log::error('Product creation failed: '.$e->getMessage());
+
+            return redirect()->back()->withInput()->with('error', 'Failed to create product: '.$e->getMessage());
         }
 
         return redirect()->route('admin.products.index')
-                         ->with('success', 'Product created successfully.');
+            ->with('success', 'Product created successfully.');
     }
 
     public function edit(Product $product)
     {
         $categories = ProductCategory::all();
         $subcategories = ProductSubcategory::all();
+
         return view('admin.products.edit', compact('product', 'categories', 'subcategories'));
     }
 
-  public function update(Request $request, Product $product)
+    public function update(Request $request, Product $product)
     {
         $validated = $request->validate([
             'product_name_en' => 'required|string|max:255',
@@ -109,8 +113,8 @@ class AdminProductController extends Controller
             'status' => 'required|in:active,inactive,pending',
             'category_id' => 'nullable|exists:products_categories,id',
             'subcategory_id' => 'nullable|exists:products_subcategories,id',
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:51200',
-            'slug' => 'nullable|string|unique:products,slug,' . $product->id,
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'slug' => 'nullable|string|unique:products,slug,'.$product->id,
         ]);
 
         $existing = $product->image ?? [];
@@ -120,8 +124,9 @@ class AdminProductController extends Controller
                 try {
                     $existing[] = $this->uploadImage($image, 'products');
                 } catch (\Exception $e) {
-                    Log::error('Image upload failed: ' . $e->getMessage());
-                    return redirect()->back()->withInput()->with('error', 'Failed to upload image: ' . $e->getMessage());
+                    Log::error('Image upload failed: '.$e->getMessage());
+
+                    return redirect()->back()->withInput()->with('error', 'Failed to upload image: '.$e->getMessage());
                 }
             }
         }
@@ -137,33 +142,42 @@ class AdminProductController extends Controller
         try {
             $product->update($data);
         } catch (\Exception $e) {
-            Log::error('Product update failed: ' . $e->getMessage());
-            return redirect()->back()->withInput()->with('error', 'Failed to update product: ' . $e->getMessage());
+            Log::error('Product update failed: '.$e->getMessage());
+
+            return redirect()->back()->withInput()->with('error', 'Failed to update product: '.$e->getMessage());
         }
 
         return redirect()->route('admin.products.index')
-                         ->with('success', 'Product updated successfully.');
+            ->with('success', 'Product updated successfully.');
     }
 
     public function destroy(Product $product)
     {
         $images = $product->image ?? [];
+
+        // Ensure it's an array (in case it's stored as JSON string)
         if (is_string($images)) {
             $images = json_decode($images, true) ?: [];
         }
-        foreach ($images as $imgPath) {
-            $this->deleteImage($imgPath);
+
+        // Delete all images from disk
+        foreach ($images as $imagePath) {
+            $this->deleteImage($imagePath); // Now works correctly
         }
 
         try {
             $product->delete();
-        } catch (\Exception $e) {
-            Log::error('Product deletion failed: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Failed to delete product: ' . $e->getMessage());
-        }
 
-        return redirect()->route('admin.products.index')
-                         ->with('success', 'Product deleted successfully.');
+            return redirect()
+                ->route('admin.products.index')
+                ->with('success', 'Product deleted successfully.');
+        } catch (\Exception $e) {
+            Log::error('Product deletion failed: '.$e->getMessage());
+
+            return redirect()
+                ->back()
+                ->with('error', 'Failed to delete product: '.$e->getMessage());
+        }
     }
 
     /**
@@ -171,9 +185,7 @@ class AdminProductController extends Controller
      */
     public function destroyImage(Request $request, Product $product)
     {
-        $request->validate([
-            'image_index' => 'required|integer|min:0',
-        ]);
+        $request->validate(['image_index' => 'required|integer|min:0']);
 
         $images = $product->image ?? [];
         if (is_string($images)) {
@@ -181,20 +193,18 @@ class AdminProductController extends Controller
         }
 
         $idx = $request->image_index;
+
         if (isset($images[$idx])) {
-            $this->deleteImage($images[$idx]);
+            $this->deleteImage($images[$idx]); // Now uses correct path
             unset($images[$idx]);
-            // Re-index
-            $images = array_values($images);
-            try {
-                $product->update(['image' => $images]);
-            } catch (\Exception $e) {
-                Log::error('Image deletion failed: ' . $e->getMessage());
-                return redirect()->back()->with('error', 'Failed to delete image: ' . $e->getMessage());
-            }
+            $images = array_values($images); // Re-index
+
+            $product->update(['image' => $images]);
+
+            return back()->with('success', 'Image deleted successfully.');
         }
 
-        return back()->with('success', 'Image deleted successfully.');
+        return back()->with('error', 'Image not found.');
     }
 
     /**
@@ -204,23 +214,23 @@ class AdminProductController extends Controller
     private function uploadImage($file, $folder)
     {
         $basename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-        $filename = time() . '_' . Str::slug($basename) . '.' . $file->getClientOriginalExtension();
+        $filename = time().'_'.Str::slug($basename).'.'.$file->getClientOriginalExtension();
 
         $dir = ("uploads/{$folder}");
-        if (!File::exists($dir)) {
+        if (! File::exists($dir)) {
             try {
                 File::makeDirectory($dir, 0755, true);
             } catch (\Exception $e) {
-                Log::error('Failed to create directory: ' . $dir . ' - ' . $e->getMessage());
-                throw new \Exception('Failed to create directory: ' . $e->getMessage());
+                Log::error('Failed to create directory: '.$dir.' - '.$e->getMessage());
+                throw new \Exception('Failed to create directory: '.$e->getMessage());
             }
         }
 
         try {
             $file->move($dir, $filename);
         } catch (\Exception $e) {
-            Log::error('Failed to move file to ' . $dir . '/' . $filename . ': ' . $e->getMessage());
-            throw new \Exception('Failed to save file: ' . $e->getMessage());
+            Log::error('Failed to move file to '.$dir.'/'.$filename.': '.$e->getMessage());
+            throw new \Exception('Failed to save file: '.$e->getMessage());
         }
 
         // Return path without leading slash to match frontend
@@ -230,15 +240,24 @@ class AdminProductController extends Controller
     /**
      * Delete an image from public folder if it exists.
      */
+    /**
+     * Delete an image from public folder if it exists.
+     */
     private function deleteImage($path)
     {
-        // Remove leading slash for consistency
-        $path = ltrim($path, '/');
-        if ($path && File::exists(($path))) {
+        if (! $path) {
+            return;
+        }
+
+        // Normalize path: remove leading slash and prepend public_path
+        $fullPath = public_path(ltrim($path, '/'));
+
+        if (File::exists($fullPath)) {
             try {
-                File::delete(($path));
+                File::delete($fullPath);
+                Log::info("Deleted image: {$fullPath}");
             } catch (\Exception $e) {
-                Log::error('Failed to delete image: ' . $path . ' - ' . $e->getMessage());
+                Log::error("Failed to delete image: {$fullPath} - ".$e->getMessage());
             }
         }
     }

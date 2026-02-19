@@ -247,5 +247,15 @@
     "Share on Twitter": "Share on Twitter",
     "Share on WhatsApp": "Share on WhatsApp",
     "Related Products": "Related Products",
-    "View": "View"
+    "View": "View",
+    
+        "Products": "Products",
+    "Categories": "Categories",
+    "Subcategories": "Subcategories",
+    "Search": "Search",
+    "Best_Sellers": "Best Sellers",
+        "ADD_TO_CART": "ADD TO CART",
+        "Qty":"Qty"
+
+
 }

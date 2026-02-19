@@ -23,12 +23,12 @@ class FrontCartController extends Controller
   public function index()
     {
         $cart = $this->getOrCreateCart();
-        $currency = session('currency', 'JOD');
+        $currency = session('currency', 'NIS');
         $cartItems = $cart->items()->with('product')->get();
 
         $items = $cartItems->map(function ($cartItem) use ($currency) {
             $product = $cartItem->product;
-            $convertedPrice = $this->currencyService->convert($cartItem->price_at_time, 'JOD', $currency);
+            $convertedPrice = $this->currencyService->convert($cartItem->price_at_time, 'NIS', $currency);
             $lineTotal = $convertedPrice * $cartItem->quantity;
             return [
                 'id' => $cartItem->id,
@@ -109,16 +109,16 @@ class FrontCartController extends Controller
     public function mini()
     {
         $cart = $this->getOrCreateCart();
-        $currency = session('currency', 'JOD');
+        $currency = session('currency', 'NIS');
         $cartItems = $cart->items()->with('product')->get();
 
         $items = $cartItems->map(function ($cartItem) use ($currency) {
             $product = $cartItem->product;
-            $convertedPrice = $this->currencyService->convert($cartItem->price_at_time, 'JOD', $currency);
+            $convertedPrice = $this->currencyService->convert($cartItem->price_at_time, 'NIS', $currency);
             $lineTotal = $convertedPrice * $cartItem->quantity;
             return [
                 'id' => $cartItem->id,
-                'name' => $product->product_name_en,
+                'name' => app()->getLocale() === 'ar' ? $product->product_name_ar : $product->product_name_en,
                 'price' => $convertedPrice,
                 'price_formatted' => $this->currencyService->format($convertedPrice, $currency),
                 'qty' => $cartItem->quantity,
@@ -188,9 +188,9 @@ class FrontCartController extends Controller
 
     protected function _getCartSummary(Cart $cart)
     {
-        $currency = session('currency', 'JOD');
+        $currency = session('currency', 'NIS');
         $subtotalRaw = $cart->items()->sum(DB::raw('price_at_time * quantity'));
-        $subtotalConverted = $this->currencyService->convert($subtotalRaw, 'JOD', $currency);
+        $subtotalConverted = $this->currencyService->convert($subtotalRaw, 'NIS', $currency);
         $subtotal = $this->currencyService->format($subtotalConverted, $currency);
         $itemCount = $cart->items()->sum('quantity');
 

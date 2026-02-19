@@ -5,7 +5,7 @@
 
       <!-- Logo + tagline + social media -->
       <div class="col-md-4 mb-4 mb-md-0 text-center text-md-start">
-        <img src="{{ asset('Logo.svg') }}" alt="{{ __('footer.company_logo_alt') }}" class="mb-2" style="max-width: 200px;">
+        <img src="{{ asset('Logo.png') }}" alt="{{ __('footer.company_logo_alt') }}" class="mb-2" style="max-width: 200px;">
         <p class="small mb-2 mb-md-3">{{ __('footer.company_tagline') }}</p>
 
         <!-- Social Media Icons -->
@@ -29,18 +29,31 @@
         </ul>
       </div>
 
-      <!-- Contact Us -->
+     <!-- Contact Us -->
       <div class="col-md-4 text-center text-md-start">
         <h5 class="ABOUT-footer-title">{{ __('footer.contact_us') }}</h5>
         <ul class="list-unstyled">
-          <li><i class="bi bi-telephone-fill me-2"></i>{{ $globalsettings->phone ?? '#' }}</li>
-          <li><i class="bi bi-envelope-fill me-2"></i>{{ $globalsettings->email ?? '#' }}</li>
-          <li><i class="bi bi-geo-alt-fill me-2"></i>{{ $globalsettings->address ?? '#' }}</li>
+          <!-- Phone: Safe array handling -->
+          <li>
+            <i class="bi bi-telephone-fill me-2"></i>
+            {{ is_array($globalsettings->phone) ? implode(' | ', array_filter($globalsettings->phone)) : ($globalsettings->phone ?? '+962 79112559') }}
+          </li>
+
+          <!-- Email -->
+          <li>
+            <i class="bi bi-envelope-fill me-2"></i>
+            {{ $globalsettings->email ?? 'info@hospital.com' }}
+          </li>
+
+          <!-- Address -->
+          <li>
+            <i class="bi bi-geo-alt-fill me-2"></i>
+            {{ $globalsettings->locations[0]['address'] ?? 'عمان - الأردن' }}
+          </li>
         </ul>
       </div>
     </div>
   </div>
-
   <!-- Bottom Strip -->
   <div class="ABOUT-footer-bottom mt-4 py-2 px-3" style="width: 280px;">
     <div class="d-flex align-items-center">

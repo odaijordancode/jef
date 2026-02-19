@@ -145,7 +145,7 @@ class AdminImagesController extends Controller
             $file->move($destinationPath, $filename);
             $image->image = '/uploads/gallery/' . $filename;
             $image->mime_type = $file->getClientMimeType();
-            $image->filesize = $file->getSize();
+            // $image->filesize = $file->getSize();
         }
 
         $image->fill([
