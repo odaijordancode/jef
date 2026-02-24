@@ -6,7 +6,7 @@
     <style>
         /* Page Title */
         .section-title {
-            color: #8b3a2b;
+            color: var(--color-text-title);
             font-weight: 700;
             margin-bottom: 25px;
         }
@@ -113,7 +113,7 @@
         }
 
         .sidebar h5 {
-            color: #8b3a2b;
+            color: var(--color-text-title);
             font-weight: 600;
             margin-bottom: 15px;
         }
@@ -128,18 +128,18 @@
         }
 
         .sidebar ul li.active {
-            color: #8b3a2b;
+            color: var(--color-text-title);
             font-weight: bold;
         }
 
         .sidebar .search-box input {
-            border: 1px solid #8b3a2b;
+            border: 1px solid var(--color-text-title);
         }
 
         .sidebar .search-box button {
             background: none;
             border: none;
-            color: #8b3a2b;
+            color: var(--color-text-title);
         }
 
         /* Best Sellers & Pagination */
@@ -163,11 +163,11 @@
 
         .pagination .page-link {
             border: none;
-            color: #8b3a2b;
+            color: var(--color-text-title);
         }
 
         .pagination .active .page-link {
-            background: #8b3a2b;
+            background: var(--color-text-title);
             color: #fff;
             border-radius: 3px;
         }

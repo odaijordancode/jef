@@ -119,7 +119,7 @@
         margin: 0 0.8rem;
         font-size: 0.98rem;
         text-transform: uppercase;
-        color: var(--text-color);
+        color: var(--color-text-body);
         font-weight: 500;
         transition: var(--transition);
         letter-spacing: 0.04rem;
@@ -135,7 +135,7 @@
         height: 2.5px;
         bottom: 3px;
         left: 50%;
-        background-color: var(--primary-color);
+        background-color: var(--color-text-title);
         transition: width 0.3s ease, left 0.3s ease;
         transform: translateX(-50%);
         border-radius: 2px;
@@ -148,14 +148,14 @@
 
     .NAVBAR-link.active,
     .NAVBAR-link:hover {
-        color: var(--primary-color);
+        color: var(--color-text-title);
         font-weight: 600;
         background: linear-gradient(90deg, rgba(161, 58, 40, 0.1), rgba(161, 58, 40, 0.05));
         transform: scale(1.03);
     }
 
     .NAVBAR-link:focus {
-        outline: 2px solid var(--primary-color);
+        outline: 2px solid var(--color-text-title);
         outline-offset: 3px;
         border-radius: 6px;
     }
@@ -186,11 +186,11 @@
 
     .NAVBAR-social a {
         font-size: 1.25rem;
-        color: var(--primary-color);
+        color: var(--color-text-title);
         transition: var(--transition);
         padding: 0.65rem;
         border-radius: 50%;
-        background-color: rgba(161, 58, 40, 0.1);
+        background-color: rgba(75, 116, 206, 0.1);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -201,13 +201,13 @@
 
     .NAVBAR-social a:hover {
         color: #FFFFFF;
-        background-color: var(--primary-color);
+        background-color: var(--color-one);
         transform: translateY(-3px) scale(1.1);
         box-shadow: var(--shadow-sm);
     }
 
     .NAVBAR-social a:focus {
-        outline: 2px solid var(--primary-color);
+        outline: 2px solid var(--color-text-title);
         outline-offset: 4px;
     }
 
@@ -220,7 +220,7 @@
 
     .navbar-locale .nav-link {
         font-size: 0.92rem;
-        color: var(--text-color);
+        color: var(--color-text-body);
         font-weight: 500;
         padding: 0.65rem 1.1rem;
         border-radius: 14px;
@@ -228,19 +228,19 @@
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        background-color: rgba(161, 58, 40, 0.1);
+        background-color: rgba(75, 116, 206, 0.1);
     }
 
     .navbar-locale .nav-link:hover,
     .navbar-locale .nav-link:focus {
-        color: var(--primary-color);
-        background-color: rgba(161, 58, 40, 0.15);
+        color: var(--color-text-title);
+        background-color: rgba(75, 116, 206, 0.1);
         transform: scale(1.04);
         box-shadow: var(--shadow-sm);
     }
 
     .navbar-locale .nav-link:focus {
-        outline: 2px solid var(--primary-color);
+        outline: 2px solid var(--color-text-title);
         outline-offset: 3px;
     }
 
@@ -261,7 +261,7 @@
 
     .navbar-locale .dropdown-menu {
         border-radius: 16px;
-        border: 1px solid var(--border-color);
+        border: 1px solid var(--color-text-title);
         box-shadow: var(--shadow-md);
         padding: 0.7rem 0;
         min-width: 12.5rem;
@@ -283,7 +283,7 @@
     .navbar-locale .dropdown-item {
         font-size: 0.92rem;
         padding: 0.65rem 1.3rem;
-        color: var(--text-color);
+        color: var(--color-text-body);
         font-weight: 500;
         display: flex;
         align-items: center;
@@ -296,15 +296,15 @@
     .navbar-locale .dropdown-item:hover,
     .navbar-locale .dropdown-item:focus {
         background: linear-gradient(90deg, rgba(161, 58, 40, 0.1), rgba(161, 58, 40, 0.05));
-        color: var(--primary-color);
+        color: var(--color-text-title);
         transform: translateX(3px);
     }
 
     .navbar-locale .dropdown-item.active {
         background: linear-gradient(90deg, rgba(161, 58, 40, 0.15), rgba(161, 58, 40, 0.1));
-        color: var(--primary-color);
+        color: var(--color-text-title);
         font-weight: 600;
-        border-left: 3px solid var(--primary-color);
+        border-left: 3px solid var(--color-text-title);
     }
 
     .navbar-locale .dropdown-item:focus {
@@ -332,7 +332,7 @@
     [dir="rtl"] .navbar-locale .dropdown-item {
         flex-direction: row-reverse;
         border-left: none;
-        border-right: 3px solid var(--primary-color);
+        border-right: 3px solid var(--color-text-title);
         transform: translateX(0);
     }
 
@@ -350,7 +350,7 @@
 
     .navbar-avatar .nav-link {
         font-size: 0.92rem;
-        color: var(--text-color);
+        color: var(--color-text-body);
         font-weight: 500;
         padding: 0.65rem;
         border-radius: 50%;
@@ -358,21 +358,21 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: rgba(161, 58, 40, 0.1);
+        background-color: rgba(75, 116, 206, 0.1);
         width: 2.4rem;
         height: 2.4rem;
     }
 
     .navbar-avatar .nav-link:hover,
     .navbar-avatar .nav-link:focus {
-        color: var(--primary-color);
+        color: var(--color-text-title);
         background-color: rgba(161, 58, 40, 0.15);
         transform: scale(1.1);
         box-shadow: var(--shadow-sm);
     }
 
     .navbar-avatar .nav-link:focus {
-        outline: 2px solid var(--primary-color);
+        outline: 2px solid var(--color-text-title);
         outline-offset: 3px;
     }
 
@@ -382,7 +382,7 @@
 
     .navbar-avatar .dropdown-menu {
         border-radius: 16px;
-        border: 1px solid var(--border-color);
+        border: 1px solid var(--color-text-title);
         box-shadow: var(--shadow-md);
         padding: 0.7rem 0;
         min-width: 12.5rem;
@@ -394,7 +394,7 @@
     .navbar-avatar .dropdown-item {
         font-size: 0.92rem;
         padding: 0.65rem 1.3rem;
-        color: var(--text-color);
+        color: var(--color-text-body);
         font-weight: 500;
         display: flex;
         align-items: center;
@@ -407,15 +407,15 @@
     .navbar-avatar .dropdown-item:hover,
     .navbar-avatar .dropdown-item:focus {
         background: linear-gradient(90deg, rgba(161, 58, 40, 0.1), rgba(161, 58, 40, 0.05));
-        color: var(--primary-color);
+        color: var(--color-text-title);
         transform: translateX(3px);
     }
 
     .navbar-avatar .dropdown-item.active {
         background: linear-gradient(90deg, rgba(161, 58, 40, 0.15), rgba(161, 58, 40, 0.1));
-        color: var(--primary-color);
+        color: var(--color-text-title);
         font-weight: 600;
-        border-left: 3px solid var(--primary-color);
+        border-left: 3px solid var(--color-text-title);
     }
 
     .navbar-avatar .dropdown-item:focus {
@@ -431,7 +431,7 @@
     [dir="rtl"] .navbar-avatar .dropdown-item {
         flex-direction: row-reverse;
         border-left: none;
-        border-right: 3px solid var(--primary-color);
+        border-right: 3px solid var(--color-text-title);
         transform: translateX(0);
     }
 
@@ -459,18 +459,18 @@
     }
 
     .custom-toggler:hover .toggler-icon {
-        background-color: var(--secondary-color);
+        background-color: var(--color-text-title);
     }
 
     .custom-toggler:focus {
-        outline: 2px solid var(--primary-color);
+        outline: 2px solid var(--color-text-title);
         outline-offset: 3px;
     }
 
     .toggler-icon {
         height: 3px;
         width: 100%;
-        background-color: var(--primary-color);
+        background-color: var(--color-text-title);
         border-radius: 3px;
         transition: transform 0.4s ease, opacity 0.4s ease, background-color 0.3s ease;
     }
@@ -641,17 +641,17 @@
     /* Cart Icon */
     .NAVBAR .bi-cart {
         font-size: 1.45rem;
-        color: var(--primary-color);
+        color: var(--color-text-title);
         transition: var(--transition);
     }
 
     .NAVBAR .bi-cart:hover {
         transform: rotate(10deg) scale(1.2);
-        color: var(--secondary-color);
+        color: var(--color-text-title);
     }
 
     .nav-cart:focus .bi-cart {
-        outline: 2px solid var(--primary-color);
+        outline: 2px solid var(--color-text-title);
         outline-offset: 3px;
     }
 
@@ -667,7 +667,7 @@
         position: absolute;
         top: -9px;
         right: -9px;
-        background: linear-gradient(135deg, #dc3545, #c82333);
+        background: linear-gradient(135deg, var(--color-one), var(--color-two));
         color: #FFFFFF;
         font-weight: 600;
         animation: bounceIn 0.4s ease;
@@ -731,7 +731,7 @@
     }
 
     .mini-cart-header {
-        background: linear-gradient(135deg, var(--primary-color) 20%, var(--secondary-color));
+        background: linear-gradient(135deg, var(--color-one), var(--color-two));
         color: #FFFFFF;
         padding: 1.1rem 1.4rem;
         font-weight: 600;
@@ -793,7 +793,7 @@
         font-size: 0.95rem;
         margin: 0 0 0.4rem 0;
         font-weight: 600;
-        color: var(--text-color);
+        color: var(--color-text-body);
         line-height: 1.4;
         display: -webkit-box;
         -webkit-line-clamp: 2;
@@ -803,7 +803,7 @@
     }
 
     .mini-cart-item:hover .mini-cart-item-info h6 {
-        color: var(--primary-color);
+        color: var(--color-text-title);
     }
 
     .mini-cart-item-info .quantity {
@@ -814,7 +814,7 @@
 
     .mini-cart-item-info .price {
         font-size: 0.95rem;
-        color: var(--primary-color);
+        color: var(--color-text-title);
         font-weight: 600;
     }
 
@@ -828,7 +828,7 @@
     .mini-cart-item .btn-close:hover {
         opacity: 1;
         transform: scale(1.2) rotate(90deg);
-        color: #dc3545;
+        color: var(--color-text-title);
     }
 
     .mini-cart-subtotal {
@@ -836,7 +836,7 @@
         background-color: rgba(161, 58, 40, 0.05);
         font-weight: 600;
         font-size: 1rem;
-        color: var(--text-color);
+        color: var(--color-text-body);
         border-top: 1px solid var(--border-color);
         text-align: right;
     }
@@ -863,27 +863,27 @@
     }
 
     .mini-cart-footer .btn-outline-primary {
-        border-color: var(--primary-color);
-        color: var(--primary-color);
+        border-color: var(--color-text-title);
+        color: var(--color-text-title);
         background: transparent;
     }
 
     .mini-cart-footer .btn-outline-primary:hover {
-        background-color: var(--primary-color);
+        background-color: var(--color-text-title);
         color: #FFFFFF;
         transform: translateY(-3px);
         box-shadow: var(--shadow-sm);
     }
 
     .mini-cart-footer .btn-primary {
-        background-color: var(--primary-color);
-        border-color: var(--primary-color);
+        background-color: var(--color-text-title);
+        border-color: var(--color-text-title);
         color: #FFFFFF;
     }
 
     .mini-cart-footer .btn-primary:hover {
-        background-color: var(--secondary-color);
-        border-color: var(--secondary-color);
+        background-color: var(--color-text-body);
+        border-color: var(--color-text-title);
         transform: translateY(-3px);
         box-shadow: var(--shadow-sm);
     }
@@ -907,12 +907,12 @@
     }
 
     .mini-cart-content::-webkit-scrollbar-thumb {
-        background: linear-gradient(var(--primary-color), var(--secondary-color));
+        background: linear-gradient(var(--color-one), var(--color-two));
         border-radius: 10px;
     }
 
     .mini-cart-content::-webkit-scrollbar-thumb:hover {
-        background: var(--secondary-color);
+        background: var(--color-text-title);
     }
 
     /* RTL Support */

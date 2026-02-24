@@ -5,10 +5,10 @@
 
     <style>
         :root {
-            --primary-color: #8B3C2B;
-            --secondary-color: #a0522d;
+            --primary-color: var(--color-text-title);
+            --secondary-color: var(--color-text-title);
             --light-bg: #fff8f6;
-            --border-color: #d9b09c;
+            --border-color: var(--color-text-title);
             --text-muted: #6c757d;
             --success-color: #28a745;
             --danger-color: #dc3545;
@@ -265,7 +265,7 @@
 
     <body class="bg-light" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
         <div class="container checkout-section">
-            <h2 class="section-title">{{ __('cart.checkout') }}</h2>
+            <h2 class="section-title" style="color: var(--color-text-title)">{{ __('cart.checkout') }}</h2>
 
             <div class="row">
                 <!-- Left: Checkout Form -->

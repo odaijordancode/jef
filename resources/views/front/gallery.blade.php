@@ -3,7 +3,7 @@
 @section('content')
 <x-hero-section-component page="gallery"/>
 
-<h2 class="section-title">{{ __('gallery.title') }}</h2>
+<h2 class="section-title" style="color: var(--color-text-title)">{{ __('gallery.title') }}</h2>
 
 <div class="parent" role="list">
     @foreach ($albums as $album)

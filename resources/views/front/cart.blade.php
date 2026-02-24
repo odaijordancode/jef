@@ -6,7 +6,7 @@
     <section class="cart-section container my-5" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
         <div class="row">
             <div class="col-lg-8">
-                <h2 class="fw-bold mb-4 text-primary-color">{{ __('cart.title') }}</h2>
+                <h2 class="fw-bold mb-4 text-primary-color" style="color: var(--color-text-title)">{{ __('cart.title') }}</h2>
 
                 @if ($cartItems->count() > 0)
                     <!-- Cart Table -->
@@ -145,10 +145,10 @@
 
     <style>
         :root {
-            --primary-color: #8B3C2B;
-            --secondary-color: #a0522d;
+            --primary-color: var(--color-text-title);
+            --secondary-color: var(--color-text-title);
             --light-bg: #fff8f6;
-            --border-color: #d9b09c;
+            --border-color: var(--color-text-title);
             --text-muted: #6c757d;
             --success-color: #28a745;
             --danger-color: #dc3545;
@@ -175,7 +175,7 @@
 
         .cart-table th {
             background: #fff4f2;
-            color: var(--primary-color);
+            color: var(--color-text-title);
             font-weight: 600;
             text-transform: uppercase;
             font-size: 0.9rem;
@@ -237,7 +237,7 @@
         }
 
         .quantity-box button {
-            background: var(--secondary-color);
+            background: var(--color-text-title);
             color: #fff;
             border: none;
             padding: 8px 14px;
@@ -247,7 +247,7 @@
         }
 
         .quantity-box button:hover:not(:disabled) {
-            background: #7b3a28;
+            background: var(--color-text-body);
         }
 
         .quantity-box button:disabled {
@@ -274,7 +274,8 @@
         }
 
         .update-btn:hover {
-            background: var(--light-bg);
+            background: var(--color-text-body);
+            color: #fff;
         }
 
         /* Totals Box */
@@ -293,7 +294,8 @@
         }
 
         .proceed-btn:hover {
-            background: var(--secondary-color);
+            background: var(--color-text-body);
+            color: #fff;
         }
 
         /* Empty Cart */

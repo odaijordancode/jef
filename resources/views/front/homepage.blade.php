@@ -100,7 +100,7 @@
         }
 
         .ABOUT-heading {
-            color: var(--brown);
+            color: var(--color-text-body);
             font-family: "Poppins", sans-serif;
             font-weight: 700;
             font-size: 34px;
@@ -157,7 +157,7 @@
         }
 
         .ABOUT-value-icon:hover {
-            background: var(--brown);
+            /* background: var(--brown); */
             color: #fff;
             transform: scale(1.08);
         }
@@ -439,13 +439,13 @@
     <style>
         /* Base font scaling for headings and text */
         .HOME-title {
-            color: #8B3A2B;
+            color: var(--color-text-title);
             font-weight: 700;
             font-size: clamp(1.5rem, 2vw + 1rem, 2.25rem);
         }
 
         .HOME-view-all {
-            color: #8B3A2B;
+            color: var(--color-text-body);
             transition: color 0.3s ease;
             font-size: clamp(0.9rem, 1vw + 0.5rem, 1.1rem);
         }

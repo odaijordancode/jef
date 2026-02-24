@@ -15,6 +15,9 @@
         :root {
             --color-one: #044c7c;
             --color-two: #4a99ce;
+            --color-text-title: #4a99ce;
+            --color-text-body: #044c7c;
+            /* --color-text: #1f2c45; */
         }
         /* Responsive padding for body */
         @media (max-width: 576px) {

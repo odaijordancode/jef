@@ -81,7 +81,7 @@
     }
 
     .ABOUT-footer-title {
-        color: #8B3C2B;
+        color: var(--color-text-title);
         /* brown title */
         font-weight: 600;
         margin-bottom: 15px;

@@ -85,6 +85,9 @@
             margin-bottom: 20px;
         }
 
+        .HERO-card h2 {
+            font-size: 1.3rem;
+        }
         .HERO-text {
             margin-top: 20px;
         }
@@ -95,6 +98,12 @@
             /* Allow image to be full-width on small screens */
         }
     }
+
+    /* @media (max-width: 576px) {
+        .HERO-card h2 {
+            font-size: 50px;
+        }
+    } */
 </style>
 
 @props(['page' => 'home'])
