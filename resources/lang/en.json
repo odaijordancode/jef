@@ -208,7 +208,8 @@
     "cart.refunded": "Refunded",
     "cart.not_started": "Not Started",
     "cart.in_progress": "In Progress",
-
+    "cart.incl._taxes": "Incl. Taxes",
+    
     "contact.title": "Get in Touch",
     "contact.subtitle": "We’d love to hear from you. Please drop us a message below.",
     "contact.placeholder_name": "Name",
@@ -248,7 +249,7 @@
     "Share on WhatsApp": "Share on WhatsApp",
     "Related Products": "Related Products",
     "View": "View",
-    
+
         "Products": "Products",
     "Categories": "Categories",
     "Subcategories": "Subcategories",

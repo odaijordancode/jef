@@ -333,7 +333,8 @@
                                         @foreach ($shippingAreas as $area)
                                             <option value="{{ $area->id }}" data-cost="{{ $area->cost }}"
                                                 {{ old('shipping_area_id') == $area->id ? 'selected' : '' }}>
-                                                {{ $area->getNameAttribute() }} ({{ number_format($area->cost, 2) }} JOD)
+                                                {{ $area->getNameAttribute() }} ({{ number_format($area->cost, 2) }}
+                                                {{ $currency }})
                                             </option>
                                         @endforeach
                                     </select>
@@ -472,38 +473,38 @@
                                         <span class="cart-item-name">{{ $item['name'] }}</span>
                                         <span class="cart-item-qty">x{{ $item['qty'] }}</span>
                                         <span class="cart-item-total">{{ $item['line_total'] }}
-                                            {{ __('cart.currency') }}</span>
+                                            {{ $currency }}</span>
                                     </div>
                                 @endforeach
 
                                 <!-- Totals -->
                                 @php
                                     $subtotalRaw = collect($items)->sum(fn($i) => $i['price'] * $i['qty']);
-                                    $tax = number_format($subtotalRaw * 0.16, 3);
+                                    // $tax = number_format($subtotalRaw * 0.16, 3);
                                     $selectedArea = $shippingAreas->firstWhere('id', old('shipping_area_id'));
                                     $shippingCost = $selectedArea?->cost ?? 0;
-                                    $grandTotal = number_format($subtotalRaw + $subtotalRaw * 0.16 + $shippingCost, 3);
+                                    $grandTotal = number_format($subtotalRaw + $shippingCost, 3);
                                 @endphp
 
                                 <div class="d-flex justify-content-between py-2 border-bottom mt-3">
                                     <span>{{ __('cart.subtotal') }}:</span>
                                     <span id="subtotal" class="fw-semibold">{{ number_format($subtotalRaw, 3) }}
-                                        {{ __('cart.currency') }}</span>
+                                        {{ $currency }}</span>
                                 </div>
                                 <div class="d-flex justify-content-between py-2 border-bottom">
                                     <span>{{ __('cart.shipping') }}:</span>
                                     <span id="shipping-cost" class="fw-semibold">{{ number_format($shippingCost, 3) }}
-                                        {{ __('cart.currency') }}</span>
+                                        {{ $currency }}</span>
                                 </div>
-                                <div class="d-flex justify-content-between py-2 border-bottom">
+                                {{-- <div class="d-flex justify-content-between py-2 border-bottom">
                                     <span>{{ __('cart.tax') }} (16%):</span>
                                     <span id="tax" class="fw-semibold">{{ $tax }}
-                                        {{ __('cart.currency') }}</span>
-                                </div>
+                                        {{ $currency }}</span>
+                                </div> --}}
                                 <div class="d-flex justify-content-between fw-bold py-3 text-lg">
-                                    <span>{{ __('cart.grand_total') }}:</span>
+                                    <span>{{ __('cart.grand_total') }} <span class="text-muted">({{ __('cart.incl._taxes') }})</span>:</span>
                                     <span id="grandtotal" class="text-primary-color">{{ $grandTotal }}
-                                        {{ __('cart.currency') }}</span>
+                                        {{ $currency }}</span>
                                 </div>
                                 <div class="mt-3 text-center">
                                     <small class="text-muted">{{ __('cart.secure_checkout') }} <i
@@ -572,8 +573,8 @@
                         cost.toFixed(3) + ' {{ __('cart.currency') }}';
 
                     const subtotal = {{ $subtotalRaw }};
-                    const tax = subtotal * 0.16;
-                    const total = subtotal + tax + cost;
+                    //const tax = subtotal * 0.16;
+                    const total = subtotal + cost;
 
                     document.getElementById('grandtotal').textContent =
                         total.toFixed(3) + ' {{ __('cart.currency') }}';

@@ -7,6 +7,7 @@ use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\ShippingArea;
+use App\Services\CurrencyService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -14,6 +15,13 @@ use Illuminate\Support\Str;
 
 class FrontCheckoutController extends Controller
 {
+    protected $currencyService;
+
+    public function __construct(CurrencyService $currencyService)
+    {
+        $this->currencyService = $currencyService;
+    }
+
     public function index()
     {
         // if (!Auth::guard('client')->check()) {
@@ -22,19 +30,21 @@ class FrontCheckoutController extends Controller
 
         $cart = $this->getOrCreateCart();
         $cartItems = $cart->items()->with('product')->get();
+        $currency = session('currency', 'NIS');
 
-        $items = $cartItems->map(function ($cartItem) {
+        $items = $cartItems->map(function ($cartItem) use ($currency) {
             $product = $cartItem->product;
             $name = app()->getLocale() === 'ar' ? $product->product_name_ar : $product->product_name_en;
 
             return [
                 'id' => $cartItem->id,
                 'name' => $name ?? 'Unnamed Product',
-                'price' => $cartItem->price_at_time ?? $product->price ?? 0,
+                'price' => $this->currencyService->convert($cartItem->price_at_time ?? $product->price ?? 0, 'NIS', $currency),
                 'qty' => $cartItem->quantity,
                 'stock' => $product->quantity,
                 'image' => $product->main_image_url ?? asset('Uploads/default.jpg'),
-                'line_total' => number_format(($cartItem->price_at_time ?? $product->price ?? 0) * $cartItem->quantity, 3),
+                'line_total' => $this->currencyService->format($this->currencyService->convert($cartItem->price_at_time ?? $product->price ?? 0, 'NIS', $currency), $currency),
+                // 'line_total' => number_format(($cartItem->price_at_time ?? $product->price ?? 0) * $cartItem->quantity, 3),
             ];
         })->toArray();
 
@@ -46,8 +56,13 @@ class FrontCheckoutController extends Controller
         $shippingAreas = ShippingArea::where('is_active', true)
             ->orderBy('name_en')
             ->get();
+        $shippingAreas = $shippingAreas->map(function ($area) use ($currency) {
+            $area->cost = $this->currencyService->convert($area->cost, 'NIS', $currency);
 
-        return view('front.checkout', compact('items', 'shippingAreas'));
+            return $area;
+        });
+
+        return view('front.checkout', compact('items', 'shippingAreas', 'currency'));
     }
 
     public function store(Request $request)
@@ -86,7 +101,7 @@ class FrontCheckoutController extends Controller
         }
 
         $subtotalRaw = $cartItems->sum(fn ($item) => ($item->price_at_time ?? $item->product->price) * $item->quantity);
-        $tax = $subtotalRaw * 0.16;
+        // $tax = $subtotalRaw * 0.16;
 
         // Fetch shipping area with cost
         $shippingArea = ShippingArea::where('id', $validated['shipping_area_id'])
@@ -95,7 +110,7 @@ class FrontCheckoutController extends Controller
 
         $shipping_cost = $shippingArea->cost;
         $discount = 0.00;
-        $total = $subtotalRaw + $tax + $shipping_cost - $discount;
+        $total = $subtotalRaw + $shipping_cost - $discount;
 
         $order = Order::create([
             'cart_id' => $cart->id,
@@ -150,6 +165,7 @@ class FrontCheckoutController extends Controller
     public function confirmation()
     {
         $query = Order::with(['items.product', 'shippingArea']);
+        $currency = session('currency', 'NIS');
 
         $orderId = session('order_id');
         if ($orderId) {
@@ -174,26 +190,29 @@ class FrontCheckoutController extends Controller
 
             return view('front.confirmation', ['order' => null, 'items' => [], 'orderNumber' => '']);
         }
-
-        $items = $order->items->map(function ($orderItem) {
+        $order->total = $this->currencyService->convert($order->total, 'NIS', $currency);
+        $order->subtotal = $this->currencyService->convert($order->subtotal, 'NIS', $currency);
+        $order->shipping_cost = $this->currencyService->convert($order->shipping_cost, 'NIS', $currency);
+        // $order->tax = $this->currencyService->convert($order->subtotal * 0.16, 'NIS', $currency);
+        $items = $order->items->map(function ($orderItem) use ($currency) {
             $product = $orderItem->product;
             $name = app()->getLocale() === 'ar' ? $orderItem->product_name_ar : $orderItem->product_name_en;
 
             return [
                 'id' => $orderItem->id,
                 'name' => $name ?? 'Unnamed Product',
-                'price' => $orderItem->price ?? 0,
+                'price' => $this->currencyService->convert($cartItem->price_at_time ?? $product->price ?? 0, 'NIS', $currency),
                 'qty' => $orderItem->quantity,
                 'stock' => $product->quantity ?? 0,
                 'image' => $product->main_image_url ?? asset('Uploads/default.jpg'),
-                'line_total' => number_format($orderItem->total, 3),
+                'line_total' => $this->currencyService->format($this->currencyService->convert($cartItem->price_at_time ?? $product->price ?? 0, 'NIS', $currency), $currency),
             ];
         })->toArray();
 
         $orderNumber = 'ORD-'.$order->id.'-'.$order->created_at->timestamp;
         session()->forget('order_id');
 
-        return view('front.confirmation', compact('order', 'items', 'orderNumber'));
+        return view('front.confirmation', compact('order', 'items', 'orderNumber', 'currency'));
     }
 
     protected function getOrCreateCart()

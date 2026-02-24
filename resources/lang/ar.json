@@ -208,6 +208,7 @@
     "cart.refunded": "مسترجع",
     "cart.not_started": "لم يبدأ",
     "cart.in_progress": "قيد التنفيذ",
+    "cart.incl._taxes": "شامل الضريبة",
 
     "contact.title": "تواصل معنا",
     "contact.subtitle": "يسعدنا سماع آرائكم، يرجى ترك رسالتكم أدناه.",
@@ -248,7 +249,7 @@
     "Share on WhatsApp": "مشاركة على واتساب",
     "Related Products": "منتجات مشابهة",
     "View": "عرض",
-    
+
     "Products": "المنتجات",
     "Categories": "الفئات",
     "Subcategories": "الفئات الفرعية",

@@ -12,22 +12,30 @@
     @include('front.layouts.styles')
 
     <style>
-      /* Responsive padding for body */
-      @media (max-width: 576px) {
-        body {
-          padding-left: 10px;
-          padding-right: 10px;
+        :root {
+            --color-one: #044c7c;
+            --color-two: #4a99ce;
         }
-        /* Example: reduce heading sizes on small devices */
-        h1, h2, h3 {
-          font-size: 1.2rem;
+        /* Responsive padding for body */
+        @media (max-width: 576px) {
+            body {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            /* Example: reduce heading sizes on small devices */
+            h1,
+            h2,
+            h3 {
+                font-size: 1.2rem;
+            }
         }
-      }
     </style>
 
     {{-- Extra head content --}}
     {{-- @yield('head') --}}
 </head>
+
 <body class="min-vh-100 text-dark container-fluid">
 
     {{-- Responsive Navbar example --}}
@@ -36,10 +44,10 @@
 
     {{-- Main content --}}
     <main class="flex-grow-1">
-      <!-- Use container-fluid for full width on xs, container-md for fixed width on md+ -->
-      <div class="container-fluid py-3">
-        @yield('content')
-      </div>
+        <!-- Use container-fluid for full width on xs, container-md for fixed width on md+ -->
+        <div class="container-fluid py-3">
+            @yield('content')
+        </div>
     </main>
 
     {{-- Responsive Footer --}}
@@ -50,5 +58,5 @@
     @include('front.layouts.scripts')
     @yield('scripts')
 </body>
-</html>
 
+</html>

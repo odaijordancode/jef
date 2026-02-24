@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
-use App\Models\CartItem;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductSubcategory;
@@ -40,9 +39,9 @@ class FrontProductController extends Controller
             $search = $request->query('search');
             $query->where(function ($q) use ($search) {
                 $q->where('product_name_en', 'like', "%{$search}%")
-                  ->orWhere('product_name_ar', 'like', "%{$search}%")
-                  ->orWhere('description_en', 'like', "%{$search}%")
-                  ->orWhere('description_ar', 'like', "%{$search}%");
+                    ->orWhere('product_name_ar', 'like', "%{$search}%")
+                    ->orWhere('description_en', 'like', "%{$search}%")
+                    ->orWhere('description_ar', 'like', "%{$search}%");
             });
         }
 
@@ -51,9 +50,9 @@ class FrontProductController extends Controller
         $subcategories = ProductSubcategory::all();
 
         $bestSellers = Product::where('status', 'active')
-                              ->orderBy('created_at', 'desc')
-                              ->take(2)
-                              ->get();
+            ->orderBy('created_at', 'desc')
+            ->take(2)
+            ->get();
 
         $cart = $this->getOrCreateCart();
         $cartItemCount = $cart->items()->sum('quantity');
@@ -63,12 +62,14 @@ class FrontProductController extends Controller
         $products->getCollection()->transform(function ($product) use ($currency) {
             $product->display_price = $this->currencyService->convert($product->price, 'NIS', $currency);
             $product->display_price_formatted = $this->currencyService->format($product->display_price, $currency);
+
             return $product;
         });
 
         $bestSellers->transform(function ($product) use ($currency) {
             $product->display_price = $this->currencyService->convert($product->price, 'NIS', $currency);
             $product->display_price_formatted = $this->currencyService->format($product->display_price, $currency);
+
             return $product;
         });
 
@@ -81,23 +82,24 @@ class FrontProductController extends Controller
     public function show($id)
     {
         $product = Product::where('id', $id)
-                          ->where('status', 'active')
-                          ->with('category', 'subcategory')
-                          ->firstOrFail();
+            ->where('status', 'active')
+            ->with('category', 'subcategory')
+            ->firstOrFail();
 
         $currency = session('currency', 'NIS');
         $product->display_price = $this->currencyService->convert($product->price, 'NIS', $currency);
         $product->display_price_formatted = $this->currencyService->format($product->display_price, $currency);
 
         $relatedProducts = Product::where('category_id', $product->category_id)
-                                  ->where('id', '!=', $product->id)
-                                  ->where('status', 'active')
-                                  ->take(4)
-                                  ->get();
+            ->where('id', '!=', $product->id)
+            ->where('status', 'active')
+            ->take(4)
+            ->get();
 
         $relatedProducts->transform(function ($product) use ($currency) {
             $product->display_price = $this->currencyService->convert($product->price, 'NIS', $currency);
             $product->display_price_formatted = $this->currencyService->format($product->display_price, $currency);
+
             return $product;
         });
 
@@ -114,7 +116,7 @@ class FrontProductController extends Controller
     {
         $request->validate([
             'product_id' => 'required|exists:products,id',
-            'quantity'   => 'required|integer|min:1'
+            'quantity' => 'required|integer|min:1',
         ]);
 
         $product = Product::findOrFail($request->input('product_id'));
@@ -123,7 +125,7 @@ class FrontProductController extends Controller
         if ($product->quantity < $quantity) {
             return response()->json([
                 'message' => 'Not enough stock available.',
-                'cart_count' => $this->getOrCreateCart()->items()->sum('quantity')
+                'cart_count' => $this->getOrCreateCart()->items()->sum('quantity'),
             ], 422);
         }
 
@@ -147,7 +149,7 @@ class FrontProductController extends Controller
 
         return response()->json([
             'message' => "{$product->product_name_en} added to cart!",
-            'cart_count' => $cartCount
+            'cart_count' => $cartCount,
         ]);
     }
 

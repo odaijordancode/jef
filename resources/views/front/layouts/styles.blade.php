@@ -14,35 +14,35 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
 <!-- Summernote WYSIWYG Editor -->
-<link
-  href="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-bs5.min.css"
-  rel="stylesheet"
-/>
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-bs5.min.css" rel="stylesheet" />
 
 {{-- Swiper + Lightbox + Custom Styles --}}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css">
 
+{{-- Title image --}}
+<link rel="icon" href="{{ asset('Logo.png') }}">
 
 <style>
-  body {
-    position: relative;
-    z-index: 1;
-  }
+    body {
+        position: relative;
+        z-index: 1;
+    }
 
-  body::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url('{{ asset('GREENHOUSES SKETCH WITH BG.svg') }}');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    opacity: 0.2; /* Adjust this for more or less visibility */
-    z-index: -1; /* Keep it behind all content */
-  }
+    body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('{{ asset('GREENHOUSES SKETCH WITH BG.svg') }}');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        opacity: 0.2;
+        /* Adjust this for more or less visibility */
+        z-index: -1;
+        /* Keep it behind all content */
+    }
 </style>
-
