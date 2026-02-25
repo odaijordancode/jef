@@ -7,7 +7,7 @@
             <div class="col-md-4 mb-4 mb-md-0 text-center text-md-start">
                 <img src="{{ asset('Logo.png') }}" alt="{{ __('footer.company_logo_alt') }}" class="mb-2"
                     style="max-width: 200px;">
-                <p class="small mb-2 mb-md-3">{{ __('footer.company_tagline') }}</p>
+                {{-- <p class="small mb-2 mb-md-3">{{ __('footer.company_tagline') }}</p> --}}
 
                 <!-- Social Media Icons -->
                 <div class="d-flex justify-content-center justify-content-md-start gap-3">

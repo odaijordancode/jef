@@ -365,10 +365,14 @@
 
                             <div class="HOME-overlay" aria-hidden="true">
                                 <div class="HOME-overlay-icons">
-                                    <a href="{{ route('front.product', $productSlug) }}">
+                                    <a href="{{ route('front.product-details', $product->id) }}">
                                         <i class="bi bi-eye" role="button" aria-label="{{ __('home.view_product') }}"
                                             tabindex="0"></i>
                                     </a>
+                                    {{-- <a href="{{ route('front.product', $productSlug) }}">
+                                        <i class="bi bi-eye" role="button" aria-label="{{ __('home.view_product') }}"
+                                            tabindex="0"></i>
+                                    </a> --}}
                                 </div>
                             </div>
 

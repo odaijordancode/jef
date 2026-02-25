@@ -19,7 +19,8 @@
 
     /* Top Strip */
     .top-strip {
-        background: linear-gradient(135deg, var(--color-one), var(--color-two));;
+        background: linear-gradient(135deg, var(--color-one), var(--color-two));
+        ;
         z-index: 1100;
         font-family: var(--font-family);
         width: 100%;
@@ -112,6 +113,9 @@
     .fade-in {
         opacity: 1 !important;
         transform: translateY(0) !important;
+        height: 80px;
+        width: 150px;
+        object-fit: cover;
     }
 
     .NAVBAR-link {
@@ -952,7 +956,6 @@
         border: 0;
     }
 </style>
-
 <!-- Top Strip -->
 <div class="top-strip py-2 px-3" role="complementary" aria-label="{{ __('navbar.top_strip') }}">
     <div class="container-fluid d-flex align-items-center justify-content-center justify-content-md-start">
