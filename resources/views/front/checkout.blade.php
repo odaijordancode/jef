@@ -502,7 +502,8 @@
                                         {{ $currency }}</span>
                                 </div> --}}
                                 <div class="d-flex justify-content-between fw-bold py-3 text-lg">
-                                    <span>{{ __('cart.grand_total') }} <span class="text-muted">({{ __('cart.incl._taxes') }})</span>:</span>
+                                    <span>{{ __('cart.grand_total') }} <span
+                                            class="text-muted">({{ __('cart.incl._taxes') }})</span>:</span>
                                     <span id="grandtotal" class="text-primary-color">{{ $grandTotal }}
                                         {{ $currency }}</span>
                                 </div>
@@ -570,14 +571,14 @@
 
                     const cost = parseFloat(opt.dataset.cost) || 0;
                     document.getElementById('shipping-cost').textContent =
-                        cost.toFixed(3) + ' {{ __('cart.currency') }}';
+                        cost.toFixed(3) + ' {{ $currency }}';
 
                     const subtotal = {{ $subtotalRaw }};
                     //const tax = subtotal * 0.16;
                     const total = subtotal + cost;
 
                     document.getElementById('grandtotal').textContent =
-                        total.toFixed(3) + ' {{ __('cart.currency') }}';
+                        total.toFixed(3) + ' {{ $currency }}';
                 });
 
                 // Injected from PHP (no Blade syntax errors!)
