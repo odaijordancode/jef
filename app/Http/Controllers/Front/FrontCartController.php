@@ -20,7 +20,7 @@ class FrontCartController extends Controller
         $this->currencyService = $currencyService;
     }
 
-  public function index()
+    public function index()
     {
         $cart = $this->getOrCreateCart();
         $currency = session('currency', 'NIS');
@@ -30,6 +30,7 @@ class FrontCartController extends Controller
             $product = $cartItem->product;
             $convertedPrice = $this->currencyService->convert($cartItem->price_at_time, 'NIS', $currency);
             $lineTotal = $convertedPrice * $cartItem->quantity;
+
             return [
                 'id' => $cartItem->id,
                 'name' => $product->product_name_en,
@@ -57,12 +58,12 @@ class FrontCartController extends Controller
     {
         $request->validate([
             'product_id' => 'required|exists:products,id',
-            'quantity'   => 'required|integer|min:1',
+            'quantity' => 'required|integer|min:1',
         ]);
 
         $product = Product::where('id', $request->product_id)
-                          ->where('status', 'active')
-                          ->firstOrFail();
+            ->where('status', 'active')
+            ->firstOrFail();
 
         if ($request->quantity > $product->quantity) {
             return response()->json([
@@ -74,8 +75,8 @@ class FrontCartController extends Controller
         $cart = $this->getOrCreateCart();
 
         $cartItem = CartItem::where('cart_id', $cart->id)
-                            ->where('product_id', $product->id)
-                            ->first();
+            ->where('product_id', $product->id)
+            ->first();
 
         if ($cartItem) {
             $newQuantity = $cartItem->quantity + $request->quantity;
@@ -116,6 +117,7 @@ class FrontCartController extends Controller
             $product = $cartItem->product;
             $convertedPrice = $this->currencyService->convert($cartItem->price_at_time, 'NIS', $currency);
             $lineTotal = $convertedPrice * $cartItem->quantity;
+
             return [
                 'id' => $cartItem->id,
                 'name' => app()->getLocale() === 'ar' ? $product->product_name_ar : $product->product_name_en,

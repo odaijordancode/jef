@@ -20,7 +20,6 @@
     /* Top Strip */
     .top-strip {
         background: linear-gradient(135deg, var(--color-one), var(--color-two));
-        ;
         z-index: 1100;
         font-family: var(--font-family);
         width: 100%;
@@ -551,7 +550,6 @@
             gap: 0.8rem;
         }
 
-        .nav-cart:hover .mini-cart-dropdown,
         .navbar-avatar:hover .dropdown-menu,
         .navbar-locale:hover .dropdown-menu {
             display: block;
@@ -700,248 +698,333 @@
         border-radius: 50%;
         transition: var(--transition);
         z-index: 1101;
+        cursor: pointer;
     }
 
     .nav-cart:hover {
         background-color: rgba(161, 58, 40, 0.1);
     }
 
-    /* Mini Cart Dropdown */
-    .mini-cart-dropdown {
-        position: absolute;
-        top: 100%;
+    /* =====================
+       CART MODAL STYLES
+    ===================== */
+    .cart-modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 9000;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.35s ease, visibility 0.35s ease;
+        backdrop-filter: blur(3px);
+    }
+
+    .cart-modal-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .cart-modal-panel {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 100%;
+        max-width: 440px;
+        height: 100%;
+        background: #FFFFFF;
+        z-index: 9001;
+        display: flex;
+        flex-direction: column;
+        transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: -8px 0 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .cart-modal-panel.active {
         right: 0;
-        width: 380px;
-        max-height: 85vh;
-        background-color: var(--light-bg);
-        border: 1px solid var(--border-color);
-        border-radius: 14px;
-        box-shadow: var(--shadow-md);
-        display: none;
-        z-index: 1200;
-        overflow: hidden;
-        animation: dropdownFade 0.3s ease-out;
     }
 
-    .mini-cart-dropdown::before {
-        content: '';
-        position: absolute;
-        top: -10px;
-        right: 22px;
-        border-left: 10px solid transparent;
-        border-right: 10px solid transparent;
-        border-bottom: 10px solid var(--light-bg);
-        z-index: 1201;
+    [dir="rtl"] .cart-modal-panel {
+        right: auto;
+        left: -100%;
+        box-shadow: 8px 0 40px rgba(0, 0, 0, 0.15);
     }
 
-    .mini-cart-header {
+    [dir="rtl"] .cart-modal-panel.active {
+        left: 0;
+    }
+
+    .cart-modal-header {
         background: linear-gradient(135deg, var(--color-one), var(--color-two));
         color: #FFFFFF;
-        padding: 1.1rem 1.4rem;
-        font-weight: 600;
+        padding: 1.4rem 1.6rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-shrink: 0;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .cart-modal-header h5 {
+        margin: 0;
+        font-size: 1.15rem;
+        font-weight: 700;
+        letter-spacing: 0.04rem;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+    }
+
+    .cart-modal-close {
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        color: #FFFFFF;
+        width: 2.2rem;
+        height: 2.2rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: var(--transition);
         font-size: 1.1rem;
-        border-top-left-radius: 14px;
-        border-top-right-radius: 14px;
-        text-align: center;
-        letter-spacing: 0.03rem;
-        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
     }
 
-    .mini-cart-content {
-        padding: 1.2rem;
-        max-height: 320px;
+    .cart-modal-close:hover {
+        background: rgba(255, 255, 255, 0.35);
+        transform: rotate(90deg) scale(1.1);
+    }
+
+    .cart-modal-body {
+        flex: 1;
         overflow-y: auto;
+        padding: 1.4rem;
     }
 
-    .mini-cart-item {
-        display: flex;
-        align-items: flex-start;
-        gap: 0.9rem;
-        padding: 0.9rem 0;
-        border-bottom: 1px dashed var(--border-color);
-        transition: var(--transition);
-        border-radius: 8px;
-        margin: 0 -0.6rem;
-        padding: 0.9rem 0.6rem;
+    .cart-modal-body::-webkit-scrollbar {
+        width: 6px;
     }
 
-    .mini-cart-item:hover {
-        background-color: rgba(161, 58, 40, 0.08);
-        transform: translateY(-2px);
-        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.06);
-    }
-
-    .mini-cart-item:last-child {
-        border-bottom: none;
-    }
-
-    .mini-cart-item img {
-        width: 64px;
-        height: 64px;
-        object-fit: cover;
-        border-radius: 10px;
-        border: 1px solid var(--border-color);
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        transition: transform var(--transition);
-    }
-
-    .mini-cart-item img:hover {
-        transform: scale(1.08);
-    }
-
-    .mini-cart-item-info {
-        flex: 1;
-    }
-
-    .mini-cart-item-info h6 {
-        font-size: 0.95rem;
-        margin: 0 0 0.4rem 0;
-        font-weight: 600;
-        color: var(--color-text-body);
-        line-height: 1.4;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        transition: color var(--transition);
-    }
-
-    .mini-cart-item:hover .mini-cart-item-info h6 {
-        color: var(--color-text-title);
-    }
-
-    .mini-cart-item-info .quantity {
-        font-size: 0.85rem;
-        color: #666;
-        margin-bottom: 0.3rem;
-    }
-
-    .mini-cart-item-info .price {
-        font-size: 0.95rem;
-        color: var(--color-text-title);
-        font-weight: 600;
-    }
-
-    .mini-cart-item .btn-close {
-        opacity: 0.6;
-        transition: var(--transition);
-        margin-top: 0.4rem;
-        filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15));
-    }
-
-    .mini-cart-item .btn-close:hover {
-        opacity: 1;
-        transform: scale(1.2) rotate(90deg);
-        color: var(--color-text-title);
-    }
-
-    .mini-cart-subtotal {
-        padding: 1rem 1.3rem;
-        background-color: rgba(161, 58, 40, 0.05);
-        font-weight: 600;
-        font-size: 1rem;
-        color: var(--color-text-body);
-        border-top: 1px solid var(--border-color);
-        text-align: right;
-    }
-
-    .mini-cart-footer {
-        padding: 1rem 1.3rem;
-        background-color: rgba(161, 58, 40, 0.03);
-        border-bottom-left-radius: 14px;
-        border-bottom-right-radius: 14px;
-        display: flex;
-        gap: 0.7rem;
-        border-top: 1px dashed var(--border-color);
-    }
-
-    .mini-cart-footer .btn {
-        flex: 1;
-        font-size: 0.9rem;
-        padding: 0.7rem 0.9rem;
-        border-radius: 10px;
-        font-weight: 600;
-        transition: var(--transition);
-        text-transform: uppercase;
-        letter-spacing: 0.03rem;
-    }
-
-    .mini-cart-footer .btn-outline-primary {
-        border-color: var(--color-text-title);
-        color: var(--color-text-title);
-        background: transparent;
-    }
-
-    .mini-cart-footer .btn-outline-primary:hover {
-        background-color: var(--color-text-title);
-        color: #FFFFFF;
-        transform: translateY(-3px);
-        box-shadow: var(--shadow-sm);
-    }
-
-    .mini-cart-footer .btn-primary {
-        background-color: var(--color-text-title);
-        border-color: var(--color-text-title);
-        color: #FFFFFF;
-    }
-
-    .mini-cart-footer .btn-primary:hover {
-        background-color: var(--color-text-body);
-        border-color: var(--color-text-title);
-        transform: translateY(-3px);
-        box-shadow: var(--shadow-sm);
-    }
-
-    .mini-cart-empty {
-        text-align: center;
-        color: #888;
-        font-size: 0.95rem;
-        padding: 2.5rem 0;
-        font-style: italic;
-    }
-
-    /* Custom Scrollbar */
-    .mini-cart-content::-webkit-scrollbar {
-        width: 8px;
-    }
-
-    .mini-cart-content::-webkit-scrollbar-track {
-        background: #F8F8F8;
+    .cart-modal-body::-webkit-scrollbar-track {
+        background: #f5f5f5;
         border-radius: 10px;
     }
 
-    .mini-cart-content::-webkit-scrollbar-thumb {
+    .cart-modal-body::-webkit-scrollbar-thumb {
         background: linear-gradient(var(--color-one), var(--color-two));
         border-radius: 10px;
     }
 
-    .mini-cart-content::-webkit-scrollbar-thumb:hover {
-        background: var(--color-text-title);
+    .cart-modal-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1rem;
+        border-radius: 14px;
+        border: 1px solid var(--border-color);
+        margin-bottom: 0.9rem;
+        transition: var(--transition);
+        background: #FAFAFA;
     }
 
-    /* RTL Support */
-    [dir="rtl"] .mini-cart-dropdown {
-        right: auto;
-        left: 0;
+    .cart-modal-item:hover {
+        border-color: rgba(161, 58, 40, 0.3);
+        background: rgba(161, 58, 40, 0.03);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
     }
 
-    [dir="rtl"] .mini-cart-dropdown::before {
-        right: auto;
-        left: 22px;
+    .cart-modal-item img {
+        width: 70px;
+        height: 70px;
+        object-fit: cover;
+        border-radius: 10px;
+        border: 1px solid var(--border-color);
+        flex-shrink: 0;
+        transition: transform var(--transition);
     }
 
-    [dir="rtl"] .mini-cart-item {
-        flex-direction: row-reverse;
+    .cart-modal-item:hover img {
+        transform: scale(1.05);
     }
 
-    [dir="rtl"] .mini-cart-subtotal {
-        text-align: left;
+    .cart-modal-item-info {
+        flex: 1;
+        min-width: 0;
     }
 
-    [dir="rtl"] .navbar-locale .dropdown-menu,
-    [dir="rtl"] .navbar-avatar .dropdown-menu {
-        right: auto;
-        left: 0;
+    .cart-modal-item-info h6 {
+        font-size: 0.92rem;
+        font-weight: 600;
+        margin: 0 0 0.3rem;
+        color: #2c2c2c;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        line-height: 1.4;
+    }
+
+    .cart-modal-item-info .item-qty {
+        font-size: 0.82rem;
+        color: #888;
+        margin-bottom: 0.25rem;
+    }
+
+    .cart-modal-item-info .item-price {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: var(--color-text-title, #A13A28);
+    }
+
+    .cart-modal-item-remove {
+        background: none;
+        border: none;
+        color: #bbb;
+        cursor: pointer;
+        padding: 0.3rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: var(--transition);
+        flex-shrink: 0;
+        font-size: 1rem;
+        width: 1.8rem;
+        height: 1.8rem;
+    }
+
+    .cart-modal-item-remove:hover {
+        color: #e53935;
+        background: rgba(229, 57, 53, 0.1);
+        transform: scale(1.15) rotate(10deg);
+    }
+
+    .cart-modal-empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        min-height: 260px;
+        color: #aaa;
+        text-align: center;
+        gap: 1rem;
+    }
+
+    .cart-modal-empty i {
+        font-size: 3.5rem;
+        opacity: 0.4;
+    }
+
+    .cart-modal-empty p {
+        font-size: 1rem;
+        margin: 0;
+        font-style: italic;
+    }
+
+    .cart-modal-loading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 200px;
+        gap: 0.7rem;
+        color: #888;
+        font-size: 0.95rem;
+    }
+
+    .cart-spinner {
+        width: 22px;
+        height: 22px;
+        border: 3px solid rgba(161, 58, 40, 0.2);
+        border-top-color: var(--color-one, #A13A28);
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+    }
+
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    .cart-modal-footer {
+        flex-shrink: 0;
+        border-top: 1px solid var(--border-color);
+        padding: 1.2rem 1.6rem;
+        background: #FAFAFA;
+    }
+
+    .cart-modal-subtotal {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        font-size: 1rem;
+    }
+
+    .cart-modal-subtotal span:first-child {
+        color: #666;
+        font-weight: 500;
+    }
+
+    .cart-modal-subtotal span:last-child {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: var(--color-text-title, #A13A28);
+    }
+
+    .cart-modal-actions {
+        display: flex;
+        gap: 0.8rem;
+    }
+
+    .cart-modal-actions .btn {
+        flex: 1;
+        padding: 0.75rem 1rem;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04rem;
+        transition: var(--transition);
+        text-align: center;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
+    }
+
+    .btn-cart-outline {
+        border: 2px solid var(--color-text-title, #A13A28);
+        color: var(--color-text-title, #A13A28);
+        background: transparent;
+    }
+
+    .btn-cart-outline:hover {
+        background: var(--color-text-title, #A13A28);
+        color: #FFFFFF;
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .btn-cart-primary {
+        background: linear-gradient(135deg, var(--color-one, #A13A28), var(--color-two, #7A2A1C));
+        color: #FFFFFF;
+        border: none;
+    }
+
+    .btn-cart-primary:hover {
+        filter: brightness(1.1);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(161, 58, 40, 0.35);
+        color: #FFFFFF;
+    }
+
+    @media (max-width: 480px) {
+        .cart-modal-panel {
+            max-width: 100%;
+        }
     }
 
     /* Accessibility */
@@ -956,6 +1039,7 @@
         border: 0;
     }
 </style>
+
 <!-- Top Strip -->
 <div class="top-strip py-2 px-3" role="complementary" aria-label="{{ __('navbar.top_strip') }}">
     <div class="container-fluid d-flex align-items-center justify-content-center justify-content-md-start">
@@ -992,7 +1076,7 @@
                     @endforeach
                 </ul>
 
-                <!-- Mobile Socials, Locale, Avatar, Cart -->
+                <!-- Mobile: Socials, Locale, Avatar -->
                 <div class="d-lg-none mt-3 px-3 w-100">
                     <!-- Social Icons -->
                     <div class="NAVBAR-social d-flex justify-content-center gap-3">
@@ -1051,9 +1135,6 @@
                             @else
                                 <i class="bi bi-person-circle me-1"></i>
                             @endif
-                            <span class="selected-account">
-                                {{-- {{ auth('client')->check() ? auth('client')->user()->name : __('navbar.account') }} --}}
-                            </span>
                         </a>
                         <ul class="dropdown-menu w-100" aria-labelledby="navbarAvatarDropdownMobile">
                             @auth('client')
@@ -1084,32 +1165,6 @@
                                 @endforeach
                             @endauth
                         </ul>
-                    </div>
-
-                    <!-- Cart Icon (Mobile) -->
-                    <div class="nav-cart position-relative mt-3">
-                        <a href="javascript:void(0);" onclick="toggleMiniCart(event)"
-                            aria-label="{{ __('navbar.open_cart') }}" data-bs-toggle="tooltip"
-                            data-bs-placement="{{ app()->getLocale() === 'ar' ? 'left' : 'right' }}"
-                            title="{{ __('navbar.cart') }}">
-                            <i class="bi bi-cart"></i>
-                            @if (isset($cartItemCount) && $cartItemCount > 0)
-                                <span class="cart-badge">{{ $cartItemCount }}</span>
-                            @endif
-                        </a>
-                        <div class="mini-cart-dropdown" id="miniCartDropdown">
-                            <div class="mini-cart-header">{{ __('navbar.your_cart') }}</div>
-                            <div class="mini-cart-content">
-                                <p class="text-muted small mb-0">{{ __('navbar.loading_cart') }}</p>
-                            </div>
-                            <div class="mini-cart-subtotal text-end d-none"></div>
-                            <div class="mini-cart-footer">
-                                <a href="{{ route('cart.index') }}"
-                                    class="btn btn-sm btn-outline-primary">{{ __('navbar.view_cart') }}</a>
-                                <a href="{{ route('checkout.index') }}"
-                                    class="btn btn-sm btn-primary">{{ __('navbar.checkout') }}</a>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -1172,8 +1227,7 @@
             <div class="navbar-avatar dropdown ms-2">
                 <a class="nav-link dropdown-toggle d-flex align-items-center" href="#"
                     id="navbarAvatarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"
-                    aria-label="{{ __('navbar.account') }}" data-bs-toggle="tooltip"
-                    data-bs-placement="{{ app()->getLocale() === 'ar' ? 'left' : 'right' }}"
+                    aria-label="{{ __('navbar.account') }}"
                     title="{{ auth('client')->check() ? auth('client')->user()->name : __('navbar.account') }}">
                     @if (auth('client')->check() && auth('client')->user()->avatar)
                         <img src="{{ asset(auth('client')->user()->avatar) }}"
@@ -1182,9 +1236,6 @@
                     @else
                         <i class="bi bi-person-circle fs-4"></i>
                     @endif
-                    <span class="selected-account ms-2 d-none d-xl-inline">
-                        {{-- {{ auth('client')->check() ? auth('client')->user()->name : __('navbar.account') }} --}}
-                    </span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarAvatarDropdown">
                     @auth('client')
@@ -1217,47 +1268,80 @@
                 </ul>
             </div>
 
-            <!-- Cart (Desktop) -->
-            <div class="nav-cart position-relative ms-3">
-                <a href="javascript:void(0);" aria-label="{{ __('navbar.open_cart') }}" data-bs-toggle="tooltip"
-                    data-bs-placement="{{ app()->getLocale() === 'ar' ? 'left' : 'right' }}"
-                    title="{{ __('navbar.cart') }}">
-                    <i class="bi bi-cart"></i>
-                    @if (isset($cartItemCount) && $cartItemCount > 0)
-                        <span class="cart-badge">{{ $cartItemCount }}</span>
-                    @endif
-                </a>
-                <div class="mini-cart-dropdown" id="miniCartDropdownDesktop">
-                    <div class="mini-cart-header">{{ __('navbar.your_cart') }}</div>
-                    <div class="mini-cart-content">
-                        <p class="text-muted small mb-0">{{ __('navbar.loading_cart') }}</p>
-                    </div>
-                    <div class="mini-cart-subtotal text-end d-none"></div>
-                    <div class="mini-cart-footer">
-                        <a href="{{ route('cart.index') }}"
-                            class="btn btn-sm btn-outline-primary">{{ __('navbar.view_cart') }}</a>
-                        <a href="{{ route('checkout.index') }}"
-                            class="btn btn-sm btn-primary">{{ __('navbar.checkout') }}</a>
-                    </div>
-                </div>
+            <!-- Cart Button (Desktop) -->
+            <div class="nav-cart position-relative ms-3" id="navCartDesktop" onclick="openCartModal()"
+                role="button" aria-label="{{ __('navbar.open_cart') }}" tabindex="0">
+                <i class="bi bi-cart"></i>
+                @if (isset($cartItemCount) && $cartItemCount > 0)
+                    <span class="cart-badge">{{ $cartItemCount }}</span>
+                @endif
             </div>
+        </div>
+
+        <!-- Cart Button (Mobile - always visible in navbar) -->
+        <div class="nav-cart position-relative d-lg-none ms-2" id="navCartMobile" onclick="openCartModal()"
+            role="button" aria-label="{{ __('navbar.open_cart') }}" tabindex="0">
+            <i class="bi bi-cart"></i>
+            @if (isset($cartItemCount) && $cartItemCount > 0)
+                <span class="cart-badge">{{ $cartItemCount }}</span>
+            @endif
         </div>
     </div>
 </nav>
 
+<!-- ===================== CART MODAL ===================== -->
+<div class="cart-modal-overlay" id="cartModalOverlay" aria-hidden="true" onclick="closeCartModal()"></div>
+
+<div class="cart-modal-panel" id="cartModalPanel" role="dialog" aria-modal="true"
+    aria-label="{{ __('navbar.your_cart') }}">
+
+    <!-- Header -->
+    <div class="cart-modal-header">
+        <h5>
+            <i class="bi bi-cart3"></i>
+            {{ __('navbar.your_cart') }}
+        </h5>
+        <button class="cart-modal-close" onclick="closeCartModal()" aria-label="{{ __('navbar.close_cart') }}">
+            <i class="bi bi-x-lg"></i>
+        </button>
+    </div>
+
+    <!-- Body -->
+    <div class="cart-modal-body" id="cartModalBody">
+        <div class="cart-modal-loading" id="cartModalLoading">
+            <div class="cart-spinner"></div>
+            <span>{{ __('navbar.loading_cart') }}</span>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="cart-modal-footer" id="cartModalFooter" style="display: none;">
+        <div class="cart-modal-subtotal">
+            <span>{{ __('navbar.subtotal') }}</span>
+            <span id="cartModalSubtotal">—</span>
+        </div>
+        <div class="cart-modal-actions">
+            <a href="{{ route('cart.index') }}" class="btn btn-cart-outline">
+                <i class="bi bi-bag"></i> {{ __('navbar.view_cart') }}
+            </a>
+            <a href="{{ route('checkout.index') }}" class="btn btn-cart-primary">
+                <i class="bi bi-credit-card"></i> {{ __('navbar.checkout') }}
+            </a>
+        </div>
+    </div>
+</div>
+<!-- ==================== END CART MODAL ==================== -->
+
 <!-- Custom JS -->
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // Cached DOM selectors
-        const selectors = {
+
+        /* ── Cached selectors ── */
+        const sel = {
             toggler: document.querySelector('.custom-toggler'),
             collapse: document.querySelector('.custom-collapse'),
             body: document.body,
             navbar: document.querySelector('.NAVBAR'),
-            desktopCartWrapper: document.querySelector('.d-none.d-lg-flex .nav-cart'),
-            mobileCartWrapper: document.querySelector('.d-lg-none .nav-cart'),
-            miniCart: document.getElementById('miniCartDropdown'),
-            miniCartDesktop: document.getElementById('miniCartDropdownDesktop'),
             desktopAvatarWrapper: document.querySelector('.d-none.d-lg-flex .navbar-avatar'),
             mobileAvatarWrapper: document.querySelector('.d-lg-none .navbar-avatar'),
             desktopLocaleWrapper: document.querySelector('.d-none.d-lg-flex .navbar-locale'),
@@ -1266,180 +1350,212 @@
             navLinks: document.querySelector('.navbar-nav'),
         };
 
-        // State flags
+        /* ── State ── */
         let state = {
             isToggling: false,
-            isCartToggling: false,
             isAvatarToggling: false,
-            isLocaleToggling: false,
+            isLocaleToggling: false
         };
 
-        // Debounce utility
-        const debounce = (func, wait) => {
-            let timeout;
-            return (...args) => {
-                clearTimeout(timeout);
-                timeout = setTimeout(() => func.apply(this, args), wait);
+        /* ── Debounce ── */
+        const debounce = (fn, wait) => {
+            let t;
+            return (...a) => {
+                clearTimeout(t);
+                t = setTimeout(() => fn(...a), wait);
             };
         };
 
-        // Toggle mobile menu
-        const toggleMobileMenu = (event) => {
-            event.stopPropagation();
+        /* ── Mobile menu ── */
+        const toggleMobileMenu = (e) => {
+            e.stopPropagation();
             if (state.isToggling) return;
             state.isToggling = true;
-            selectors.toggler.classList.toggle('open');
-            selectors.collapse.classList.toggle('show');
-            selectors.body.classList.toggle('menu-open');
+            sel.toggler.classList.toggle('open');
+            sel.collapse.classList.toggle('show');
+            sel.body.classList.toggle('menu-open');
             closeAllDropdowns();
             setTimeout(() => {
                 state.isToggling = false;
             }, 400);
         };
 
-        // Close all dropdowns (mini-cart, avatar, locale)
+        /* ── Close dropdowns (avatar / locale only) ── */
         const closeAllDropdowns = () => {
-            selectors.miniCart?.classList.remove('show');
-            selectors.miniCartDesktop?.classList.remove('show');
-            document.querySelectorAll('.navbar-avatar .dropdown-menu').forEach(menu => menu.classList
-                .remove('show'));
-            document.querySelectorAll('.navbar-locale .dropdown-menu').forEach(menu => menu.classList
-                .remove('show'));
+            document.querySelectorAll('.navbar-avatar .dropdown-menu').forEach(m => m.classList.remove(
+                'show'));
+            document.querySelectorAll('.navbar-locale .dropdown-menu').forEach(m => m.classList.remove(
+                'show'));
         };
 
-        // Handle outside clicks with debouncing
-        const handleOutsideClick = debounce((event) => {
-            if (!selectors.toggler.contains(event.target) &&
-                !selectors.collapse.contains(event.target) &&
-                !event.target.closest('.NAVBAR-link') &&
-                !event.target.closest('.navbar-locale') &&
-                !event.target.closest('.navbar-avatar') &&
-                !event.target.closest('.nav-cart')) {
-                selectors.toggler.classList.remove('open');
-                selectors.collapse.classList.remove('show');
-                selectors.body.classList.remove('menu-open');
+        /* ── Outside click ── */
+        const handleOutsideClick = debounce((e) => {
+            if (!sel.toggler.contains(e.target) &&
+                !sel.collapse.contains(e.target) &&
+                !e.target.closest('.NAVBAR-link') &&
+                !e.target.closest('.navbar-locale') &&
+                !e.target.closest('.navbar-avatar') &&
+                !e.target.closest('#cartModalPanel')) {
+                sel.toggler.classList.remove('open');
+                sel.collapse.classList.remove('show');
+                sel.body.classList.remove('menu-open');
                 closeAllDropdowns();
             }
         }, 100);
 
-        // Prevent nav link clicks from closing the menu
-        const handleNavLinkClick = (event) => {
-            if (event.target.closest('.NAVBAR-link')) {
-                event.stopPropagation();
-            }
+        /* ── Prevent nav-link click closing menu ── */
+        const handleNavLinkClick = (e) => {
+            if (e.target.closest('.NAVBAR-link')) e.stopPropagation();
         };
 
-        // Sticky shadow on scroll (debounced)
+        /* ── Sticky shadow ── */
         const handleScroll = debounce(() => {
-            if (window.scrollY > 10) {
-                selectors.navbar?.classList.add('sticky-shadow');
-            } else {
-                selectors.navbar?.classList.remove('sticky-shadow');
-            }
+            sel.navbar?.classList.toggle('sticky-shadow', window.scrollY > 10);
         }, 50);
 
-        // Logo fade-in
+        /* ── Logo fade-in ── */
         const initLogoFadeIn = () => {
-            document.querySelectorAll('.NAVBAR-logo').forEach(logo => logo.classList.add('fade-in'));
+            document.querySelectorAll('.NAVBAR-logo').forEach(l => l.classList.add('fade-in'));
         };
 
-        // Initialize tooltips
+        /* ── Tooltips ── */
         const initTooltips = () => {
-            selectors.tooltipElements.forEach(el => new bootstrap.Tooltip(el, {
+            sel.tooltipElements.forEach(el => new bootstrap.Tooltip(el, {
                 trigger: 'hover focus',
                 placement: document.documentElement.dir === 'rtl' ? 'left' : 'right',
             }));
         };
 
-        // Animate cart badge
+        /* ── Cart badge ── */
         const animateCartBadge = () => {
-            document.querySelectorAll('.cart-badge').forEach(badge => {
-                badge.classList.remove('bounceIn');
-                void badge.offsetWidth; // Force reflow
-                badge.classList.add('bounceIn');
+            document.querySelectorAll('.cart-badge').forEach(b => {
+                b.classList.remove('bounceIn');
+                void b.offsetWidth;
+                b.classList.add('bounceIn');
             });
         };
 
-        // Update cart badges
         const updateCartBadges = (count) => {
             const badges = document.querySelectorAll('.cart-badge');
-            const prevCount = parseInt(badges[0]?.textContent || '0');
-            badges.forEach(badge => {
+            const prev = parseInt(badges[0]?.textContent || '0');
+            badges.forEach(b => {
                 if (count > 0) {
-                    badge.textContent = count;
-                    badge.style.display = 'block';
-                    if (count !== prevCount) animateCartBadge();
-                } else {
-                    badge.style.display = 'none';
-                }
+                    b.textContent = count;
+                    b.style.display = 'block';
+                    if (count !== prev) animateCartBadge();
+                } else b.style.display = 'none';
             });
         };
 
-        // Load mini cart content with retry logic
-        const loadMiniCartContent = async (miniCartEl, retries = 2) => {
-            if (!miniCartEl || miniCartEl.dataset.loaded === 'true') return;
+        /* ══════════════════════════════════════════
+            CART MODAL LOGIC
+        ══════════════════════════════════════════ */
+        const overlay = document.getElementById('cartModalOverlay');
+        const panel = document.getElementById('cartModalPanel');
+        const body = document.getElementById('cartModalBody');
+        const footer = document.getElementById('cartModalFooter');
+        const subtotalEl = document.getElementById('cartModalSubtotal');
+        let cartLoaded = false;
 
-            const container = miniCartEl.querySelector('.mini-cart-content');
-            const subtotalEl = miniCartEl.querySelector('.mini-cart-subtotal');
-            container.innerHTML = '<p class="text-muted small mb-0 loading-spinner">Loading...</p>';
-            subtotalEl?.classList.add('d-none');
+        window.openCartModal = () => {
+            overlay.classList.add('active');
+            panel.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            panel.setAttribute('aria-hidden', 'false');
+
+            /* Close mobile menu if open */
+            sel.toggler.classList.remove('open');
+            sel.collapse.classList.remove('show');
+            sel.body.classList.remove('menu-open');
+
+             loadCartModal();
+        };
+
+        window.closeCartModal = () => {
+            overlay.classList.remove('active');
+            panel.classList.remove('active');
+            document.body.style.overflow = '';
+            panel.setAttribute('aria-hidden', 'true');
+        };
+
+        const loadCartModal = async (retries = 2) => {
+            body.innerHTML = `
+            <div class="cart-modal-loading">
+                <div class="cart-spinner"></div>
+                <span>{{ __('navbar.loading_cart') }}</span>
+            </div>`;
+            footer.style.display = 'none';
 
             try {
-                const response = await fetch('{{ route('cart.mini') }}', {
+                const res = await fetch('{{ route('cart.mini') }}', {
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest',
-                        'Accept': 'application/json',
-                    },
+                        'Accept': 'application/json'
+                    }
                 });
 
-                if (!response.ok && retries > 0) {
-                    setTimeout(() => loadMiniCartContent(miniCartEl, retries - 1), 1000);
+                if (!res.ok && retries > 0) {
+                    setTimeout(() => loadCartModal(retries - 1), 1000);
                     return;
                 }
 
-                const data = await response.json();
-                container.innerHTML = '';
+                const data = await res.json();
+                body.innerHTML = '';
 
                 if (!data.items?.length) {
-                    container.innerHTML =
-                        '<p class="mini-cart-empty">{{ __('navbar.cart_empty') }}</p>';
+                    body.innerHTML = `
+                    <div class="cart-modal-empty">
+                        <i class="bi bi-cart-x"></i>
+                        <p>{{ __('navbar.cart_empty') }}</p>
+                    </div>`;
+                    footer.style.display = 'none';
                 } else {
                     data.items.forEach(item => {
-                        const itemEl = document.createElement('div');
-                        itemEl.className = 'mini-cart-item';
-                        itemEl.innerHTML = `
+                        const el = document.createElement('div');
+                        el.className = 'cart-modal-item';
+                        el.innerHTML = `
                         <img src="${item.image}" alt="${item.name}" loading="lazy">
-                        <div class="mini-cart-item-info">
+                        <div class="cart-modal-item-info">
                             <h6>${item.name}</h6>
-                            <div class="quantity">{{ __('Qty') }}: ${item.qty}</div>
-                            <div class="price">${item.line_total_formatted}</div>
+                            <div class="item-qty">{{ __('Qty') }}: ${item.qty}</div>
+                            <div class="item-price">${item.line_total_formatted}</div>
                         </div>
-                        <button type="button" class="btn-close btn-close-sm" aria-label="{{ __('navbar.remove_item') }}" data-item-id="${item.id}" data-mini-cart-id="${miniCartEl.id}"></button>
-                    `;
-                        container.appendChild(itemEl);
+                        <button class="cart-modal-item-remove" aria-label="{{ __('navbar.remove_item') }}"
+                                data-item-id="${item.id}">
+                            <i class="bi bi-trash3"></i>
+                        </button>`;
+                        body.appendChild(el);
                     });
 
-                    subtotalEl.textContent = `{{ __('navbar.subtotal') }}: ${data.subtotal}`;
-                    subtotalEl.classList.remove('d-none');
+                    subtotalEl.textContent = data.subtotal;
+                    footer.style.display = 'block';
                 }
 
                 updateCartBadges(data.item_count);
-                miniCartEl.dataset.loaded = 'true';
+                cartLoaded = true;
+
             } catch (err) {
-                console.error('Mini cart fetch error:', err);
-                container.innerHTML =
-                    '<p class="text-danger">{{ __('navbar.error_loading_cart') }}</p>';
+                console.error('Cart modal error:', err);
+                body.innerHTML =
+                    `<p class="text-danger text-center mt-4">{{ __('navbar.error_loading_cart') }}</p>`;
             }
         };
 
-        // Remove from cart with retry logic
-        const removeFromCart = async (itemId, buttonEl, miniCartId, retries = 2) => {
-            const csrfToken = '{{ csrf_token() }}';
+        /* Remove item */
+        body.addEventListener('click', async (e) => {
+            const btn = e.target.closest('.cart-modal-item-remove');
+            if (!btn) return;
+
+            const itemId = btn.dataset.itemId;
+            btn.disabled = true;
+            btn.innerHTML =
+                '<div class="cart-spinner" style="width:16px;height:16px;border-width:2px;"></div>';
+
             try {
-                const response = await fetch(`{{ url('/cart/remove') }}/${itemId}`, {
+                const res = await fetch(`{{ url('/cart/remove') }}/${itemId}`, {
                     method: 'POST',
                     headers: {
-                        'X-CSRF-TOKEN': csrfToken,
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
                         'X-Requested-With': 'XMLHttpRequest',
                         'Accept': 'application/json',
                         'Content-Type': 'application/json',
@@ -1449,187 +1565,107 @@
                     }),
                 });
 
-                if (!response.ok && retries > 0) {
-                    setTimeout(() => removeFromCart(itemId, buttonEl, miniCartId, retries - 1), 1000);
-                    return;
-                }
+                const data = await res.json();
+                btn.closest('.cart-modal-item')?.remove();
 
-                const data = await response.json();
-                alert(data.message);
-                buttonEl.closest('.mini-cart-item')?.remove();
-                const miniCartEl = document.getElementById(miniCartId);
-                if (miniCartEl) {
-                    miniCartEl.dataset.loaded = false;
-                    loadMiniCartContent(miniCartEl);
-                }
+                /* Reload to refresh subtotal */
+                cartLoaded = false;
+                loadCartModal();
                 updateCartBadges(data.cart_count);
+
             } catch (err) {
-                console.error('Remove cart item error:', err);
-                alert('{{ __('navbar.error_removing_item') }}');
+                console.error('Remove cart error:', err);
+                btn.disabled = false;
+                btn.innerHTML = '<i class="bi bi-trash3"></i>';
             }
-        };
+        });
 
-        // Handle desktop hover for mini cart
-        const initDesktopCartHover = () => {
-            if (!selectors.desktopCartWrapper) return;
-            let hoverTimeout;
-            selectors.desktopCartWrapper.addEventListener('mouseenter', () => {
-                hoverTimeout = setTimeout(() => {
-                    selectors.miniCartDesktop.classList.add('show');
-                    loadMiniCartContent(selectors.miniCartDesktop);
-                }, 200);
-            });
-            selectors.desktopCartWrapper.addEventListener('mouseleave', () => {
-                clearTimeout(hoverTimeout);
-                selectors.miniCartDesktop.classList.remove('show');
-            });
-        };
+        /* Keyboard: Escape closes modal */
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeCartModal();
+                sel.toggler.classList.remove('open');
+                sel.collapse.classList.remove('show');
+                sel.body.classList.remove('menu-open');
+                closeAllDropdowns();
+            }
+            if (e.key === 'Enter' && e.target.closest('.nav-cart')) openCartModal();
+            if (e.key === 'Enter' && e.target.closest('.navbar-avatar .nav-link')) toggleAvatarDropdown(
+                e);
+            if (e.key === 'Enter' && e.target.closest('.navbar-locale .nav-link')) toggleLocaleDropdown(
+                e);
+        });
 
-        // Handle desktop hover for avatar dropdown
+        /* ── Desktop hover: avatar ── */
         const initDesktopAvatarHover = () => {
-            if (!selectors.desktopAvatarWrapper) return;
-            let hoverTimeout;
-            selectors.desktopAvatarWrapper.addEventListener('mouseenter', () => {
-                hoverTimeout = setTimeout(() => {
-                    selectors.desktopAvatarWrapper.querySelector('.dropdown-menu').classList
-                        .add('show');
-                }, 200);
+            if (!sel.desktopAvatarWrapper) return;
+            let t;
+            sel.desktopAvatarWrapper.addEventListener('mouseenter', () => {
+                t = setTimeout(() => sel.desktopAvatarWrapper.querySelector('.dropdown-menu')
+                    .classList.add('show'), 200);
             });
-            selectors.desktopAvatarWrapper.addEventListener('mouseleave', () => {
-                clearTimeout(hoverTimeout);
-                selectors.desktopAvatarWrapper.querySelector('.dropdown-menu').classList.remove(
-                    'show');
+            sel.desktopAvatarWrapper.addEventListener('mouseleave', () => {
+                clearTimeout(t);
+                sel.desktopAvatarWrapper.querySelector('.dropdown-menu').classList.remove('show');
             });
         };
 
-        // Handle desktop hover for locale dropdown
+        /* ── Desktop hover: locale ── */
         const initDesktopLocaleHover = () => {
-            if (!selectors.desktopLocaleWrapper) return;
-            let hoverTimeout;
-            selectors.desktopLocaleWrapper.addEventListener('mouseenter', () => {
-                hoverTimeout = setTimeout(() => {
-                    selectors.desktopLocaleWrapper.querySelector('.dropdown-menu').classList
-                        .add('show');
-                }, 200);
+            if (!sel.desktopLocaleWrapper) return;
+            let t;
+            sel.desktopLocaleWrapper.addEventListener('mouseenter', () => {
+                t = setTimeout(() => sel.desktopLocaleWrapper.querySelector('.dropdown-menu')
+                    .classList.add('show'), 200);
             });
-            selectors.desktopLocaleWrapper.addEventListener('mouseleave', () => {
-                clearTimeout(hoverTimeout);
-                selectors.desktopLocaleWrapper.querySelector('.dropdown-menu').classList.remove(
-                    'show');
+            sel.desktopLocaleWrapper.addEventListener('mouseleave', () => {
+                clearTimeout(t);
+                sel.desktopLocaleWrapper.querySelector('.dropdown-menu').classList.remove('show');
             });
         };
 
-        // Toggle mobile mini cart
-        window.toggleMiniCart = (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            if (state.isCartToggling) return;
-            state.isCartToggling = true;
-            selectors.miniCart?.classList.toggle('show');
-            if (selectors.miniCart?.classList.contains('show')) {
-                loadMiniCartContent(selectors.miniCart);
-            }
-            closeAllDropdowns();
-            setTimeout(() => {
-                state.isCartToggling = false;
-            }, 400);
-        };
-
-        // Toggle mobile avatar dropdown
-        window.toggleAvatarDropdown = (event) => {
-            event.preventDefault();
-            event.stopPropagation();
+        /* ── Mobile: avatar toggle ── */
+        window.toggleAvatarDropdown = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
             if (state.isAvatarToggling) return;
             state.isAvatarToggling = true;
-            const mobileAvatarDropdown = selectors.mobileAvatarWrapper?.querySelector('.dropdown-menu');
-            mobileAvatarDropdown?.classList.toggle('show');
-            closeAllDropdowns();
+            // Close locale first
+            document.querySelectorAll('.navbar-locale .dropdown-menu').forEach(m => m.classList.remove(
+                'show'));
+            sel.mobileAvatarWrapper?.querySelector('.dropdown-menu')?.classList.toggle('show');
             setTimeout(() => {
                 state.isAvatarToggling = false;
             }, 400);
         };
 
-        // Toggle mobile locale dropdown
-        window.toggleLocaleDropdown = (event) => {
-            event.preventDefault();
-            event.stopPropagation();
+        /* ── Mobile: locale toggle ── */
+        window.toggleLocaleDropdown = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
             if (state.isLocaleToggling) return;
             state.isLocaleToggling = true;
-            const mobileLocaleDropdown = selectors.mobileLocaleWrapper?.querySelector('.dropdown-menu');
-            mobileLocaleDropdown?.classList.toggle('show');
-            closeAllDropdowns();
+            // Close avatar first
+            document.querySelectorAll('.navbar-avatar .dropdown-menu').forEach(m => m.classList.remove(
+                'show'));
+            sel.mobileLocaleWrapper?.querySelector('.dropdown-menu')?.classList.toggle('show');
             setTimeout(() => {
                 state.isLocaleToggling = false;
             }, 400);
         };
 
-        // Keyboard navigation for accessibility
-        const handleKeyboardNavigation = (event) => {
-            if (event.key === 'Escape') {
-                selectors.toggler.classList.remove('open');
-                selectors.collapse.classList.remove('show');
-                selectors.body.classList.remove('menu-open');
-                closeAllDropdowns();
-            }
-            if (event.key === 'Enter' && event.target.closest('.nav-cart')) {
-                window.toggleMiniCart(event);
-            }
-            if (event.key === 'Enter' && event.target.closest('.navbar-avatar .nav-link')) {
-                window.toggleAvatarDropdown(event);
-            }
-            if (event.key === 'Enter' && event.target.closest('.navbar-locale .nav-link')) {
-                window.toggleLocaleDropdown(event);
-            }
-        };
+        /* ── Init ── */
+        sel.toggler?.addEventListener('click', toggleMobileMenu);
+        document.addEventListener('click', handleOutsideClick);
+        sel.navLinks?.addEventListener('click', handleNavLinkClick);
+        window.addEventListener('scroll', handleScroll);
+        initLogoFadeIn();
+        initTooltips();
+        initDesktopAvatarHover();
+        initDesktopLocaleHover();
 
-        // Touch support for mobile
-        const handleTouchStart = (event) => {
-            if (event.target.closest('.nav-cart')) {
-                window.toggleMiniCart(event);
-            } else if (event.target.closest('.navbar-avatar .nav-link')) {
-                window.toggleAvatarDropdown(event);
-            } else if (event.target.closest('.navbar-locale .nav-link')) {
-                window.toggleLocaleDropdown(event);
-            }
-        };
-
-        // Event delegation for remove buttons
-        const handleRemoveButtonClick = (event) => {
-            const button = event.target.closest('.btn-close');
-            if (button) {
-                const itemId = button.dataset.itemId;
-                const miniCartId = button.dataset.miniCartId;
-                if (itemId && miniCartId) {
-                    removeFromCart(itemId, button, miniCartId);
-                }
-            }
-        };
-
-        // Initialize event listeners
-        const initEventListeners = () => {
-            selectors.toggler?.addEventListener('click', toggleMobileMenu);
-            document.addEventListener('click', handleOutsideClick);
-            selectors.navLinks?.addEventListener('click', handleNavLinkClick);
-            window.addEventListener('scroll', handleScroll);
-            document.addEventListener('keydown', handleKeyboardNavigation);
-            document.addEventListener('touchstart', handleTouchStart);
-            selectors.miniCart?.addEventListener('click', handleRemoveButtonClick);
-            selectors.miniCartDesktop?.addEventListener('click', handleRemoveButtonClick);
-            initDesktopCartHover();
-            initDesktopAvatarHover();
-            initDesktopLocaleHover();
-        };
-
-        // Initialize
-        const init = () => {
-            initLogoFadeIn();
-            initTooltips();
-            initEventListeners();
-            @if (isset($cartItemCount))
-                updateCartBadges({{ $cartItemCount }});
-            @endif
-        };
-
-        init();
+        @if (isset($cartItemCount))
+            updateCartBadges({{ $cartItemCount }});
+        @endif
     });
 </script>
