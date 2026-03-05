@@ -66,8 +66,8 @@
         /* Overlapping slider card */
         .ABOUT-slider {
             position: absolute;
-            bottom: -20px;
-            right: -20px;
+            bottom: -100px;
+            right: -2px;
             background: linear-gradient(135deg, var(--color-one), var(--color-two));
             color: #fff;
             border-radius: 12px;
@@ -112,7 +112,12 @@
             .ABOUT-slider {
                 position: static;
                 margin-top: 20px;
-                width: 100%;
+                width: 40%;
+                bottom: -190px;
+            }
+
+            .image {
+                width: 270px;
             }
         }
 
@@ -131,6 +136,7 @@
             background: linear-gradient(135deg, var(--color-one), var(--color-two));
             border-radius: 25px;
             padding: 3rem 1rem;
+            margin-top: 160px;
         }
 
         .ABOUT-why h2 {
@@ -388,7 +394,7 @@
             <div class="col-lg-6 col-md-12 text-center">
                 <div class="ABOUT-image-container position-relative d-inline-block">
                     @if ($aboutUs && $aboutUs->about_main_image)
-                        <img src="{{ asset($aboutUs->about_main_image) }}" alt="{{ __('about.main_image_alt') }}">
+                        <img src="{{ asset($aboutUs->about_main_image) }}" alt="{{ __('about.main_image_alt') }}" class="image">
                     @else
                         <img src="{{ asset('images/placeholder.png') }}" alt="{{ __('about.main_image_alt') }}">
                     @endif
