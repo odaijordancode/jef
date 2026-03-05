@@ -206,13 +206,21 @@ class AdminProductController extends Controller
 
     //     return back()->with('error', 'Image not found.');
     // }
-    public function destroyImage(Product $product, $imagePath)
+    public function destroyImage(Request $request, Product $product, $imagePath)
     {
-        dd($imagePath);
+        // delete the file from storage if exists
         $this->deleteImage($imagePath);
+
         $images = $product->image ?? [];
-        $images = array_diff($images, [$imagePath]);
+        if (is_string($images)) {
+            $images = json_decode($images, true) ?: [];
+        }
+        $images = array_values(array_diff($images, [$imagePath]));
         $product->update(['image' => $images]);
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json(['success' => true]);
+        }
 
         return redirect()->back()->with('success', 'Image deleted successfully.');
     }

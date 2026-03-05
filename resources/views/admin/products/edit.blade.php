@@ -116,11 +116,11 @@
                                             <img src="{{ asset($image) }}" alt="Product image"
                                                 class="img-thumbnail"
                                                 style="width: 100%; height: 150px; object-fit: cover;">
-                                            <a href="{{ route('admin.products.images.destroy', [$product, $image]) }}"
-                                                class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1"
-                                                onclick="return confirm('Delete this image?')">
+                                            <button type="button"
+                                                data-url="{{ route('admin.products.images.destroy', [$product, $image]) }}"
+                                                class="delete-image-btn btn btn-danger btn-sm position-absolute top-0 end-0 m-1">
                                                 <i class="fas fa-trash"></i>
-                                            </a>
+                                            </button>
                                         </div>
                                     @endforeach
                                 </div>
@@ -228,6 +228,40 @@
                             <button type="submit" class="btn btn-primary">Update Product</button>
                         </div>
                     </form>
+
+                    {{-- AJAX delete script --}}
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            document.querySelectorAll('.delete-image-btn').forEach(btn => {
+                                btn.addEventListener('click', function(e) {
+                                    e.preventDefault();
+                                    if (!confirm('هل أنت متأكد من حذف الصورة؟')) return;
+
+                                    const url = this.dataset.url;
+                                    fetch(url, {
+                                        method: 'DELETE',
+                                        headers: {
+                                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                            'Accept': 'application/json'
+                                        }
+                                    })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data.success) {
+                                            // remove this image container
+                                            this.closest('.col-md-3').remove();
+                                        } else {
+                                            alert(data.message || 'فشل حذف الصورة');
+                                        }
+                                    })
+                                    .catch(err => {
+                                        console.error(err);
+                                        alert('حدث خطأ أثناء الحذف');
+                                    });
+                                });
+                            });
+                        });
+                    </script>
 
                 </div>
             </div>

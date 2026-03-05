@@ -112,7 +112,10 @@ Route::middleware(['web', SetLocale::class])->group(function () {
             Route::resource('clients', AdminClientController::class);
             Route::resource('shipping-areas', controller: AdminShippingAreaController::class);
 
-            Route::get('/products/{product}/images/{path}', [AdminProductController::class, 'destroyImage'])->name('products.images.destroy');
+            // image deletion via AJAX, accepts full path including slashes
+            Route::delete('/products/{product}/images/{path}', [AdminProductController::class, 'destroyImage'])
+                ->where('path', '.*')
+                ->name('products.images.destroy');
 
             // ✅ Pending count route
             Route::get('/admin/orders/pending-count', [AdminOrderController::class, 'pendingCount'])->name('admin.orders.pending-count');
