@@ -193,7 +193,7 @@
                                         </h6>
 
                                         <p class="product-description">
-                                            {{ Str::limit(app()->getLocale() === 'ar' ? $product->description_ar : $product->description_en ?? 'No description available.', 120) }}
+                                            {!! Str::limit(app()->getLocale() === 'ar' ? $product->description_ar : $product->description_en ?? 'No description available.', 120) !!}
                                         </p>
 
                                         @if (strlen($product->description_en ?? '') > 120)

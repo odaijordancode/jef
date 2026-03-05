@@ -623,7 +623,7 @@
                     return res.json();
                 })
                 .then(data => {
-                    console.log('API Response:', data); // Debug: Log API response
+                    // console.log('API Response:', data); // Debug: Log API response
                     if (data.pending_count !== undefined && data.pending_orders !== undefined) {
                         updateNotificationBadge(data.pending_count, 'Error loading notifications', data.pending_orders);
                     } else {

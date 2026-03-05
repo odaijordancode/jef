@@ -183,28 +183,38 @@ class AdminProductController extends Controller
     /**
      * Delete a specific image by index.
      */
-    public function destroyImage(Request $request, Product $product)
+    // public function destroyImage(Request $request, Product $product, $imagePath)
+    // {
+    //     $request->validate(['image_index' => 'required|integer|min:0']);
+
+    //     $images = $product->image ?? [];
+    //     if (is_string($images)) {
+    //         $images = json_decode($images, true) ?: [];
+    //     }
+
+    //     $idx = $request->image_index;
+
+    //     if (isset($images[$idx])) {
+    //         $this->deleteImage($images[$idx]); // Now uses correct path
+    //         unset($images[$idx]);
+    //         $images = array_values($images); // Re-index
+
+    //         $product->update(['image' => $images]);
+
+    //         return back()->with('success', 'Image deleted successfully.');
+    //     }
+
+    //     return back()->with('error', 'Image not found.');
+    // }
+    public function destroyImage(Product $product, $imagePath)
     {
-        $request->validate(['image_index' => 'required|integer|min:0']);
-
+        dd($imagePath);
+        $this->deleteImage($imagePath);
         $images = $product->image ?? [];
-        if (is_string($images)) {
-            $images = json_decode($images, true) ?: [];
-        }
+        $images = array_diff($images, [$imagePath]);
+        $product->update(['image' => $images]);
 
-        $idx = $request->image_index;
-
-        if (isset($images[$idx])) {
-            $this->deleteImage($images[$idx]); // Now uses correct path
-            unset($images[$idx]);
-            $images = array_values($images); // Re-index
-
-            $product->update(['image' => $images]);
-
-            return back()->with('success', 'Image deleted successfully.');
-        }
-
-        return back()->with('error', 'Image not found.');
+        return redirect()->back()->with('success', 'Image deleted successfully.');
     }
 
     /**
